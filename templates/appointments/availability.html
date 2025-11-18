@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Availability - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="calendar-clock" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">My Availability</h1>
+                <p class="text-slate-600">Manage your appointment availability schedule</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+            <a href="{% url 'appointments:availability_create' %}" 
+               class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center justify-center">
+                <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                Add Availability
+            </a>
+            <a href="{% url 'appointments:list' %}" 
+               class="bg-slate-600 hover:bg-slate-700 px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center justify-center">
+                <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                My Appointments
+            </a>
+        </div>
+
+        <!-- Current Availability -->
+        <div class="clinic-card rounded-xl p-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Current Schedule</h2>
+            
+            {% if availabilities %}
+                <div class="space-y-4">
+                    {% for availability in availabilities %}
+                        <div class="bg-slate-50 rounded-xl p-6 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="clock" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-900">{{ availability.get_day_of_week_display }}</h3>
+                                    <p class="text-slate-600">{{ availability.start_time }} - {{ availability.end_time }}</p>
+                                    <p class="text-sm {% if availability.is_active %}text-green-600{% else %}text-red-600{% endif %}">
+                                        {% if availability.is_active %}Active{% else %}Inactive{% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <a href="{% url 'appointments:availability_update' availability.pk %}" 
+                                   class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                                    Edit
+                                </a>
+                                <a href="{% url 'appointments:availability_delete' availability.pk %}" 
+                                   class="text-red-600 hover:text-red-500 font-medium text-sm">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="text-center py-12">
+                    <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                        <i data-lucide="calendar-x" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2">No Availability Set</h3>
+                    <p class="text-slate-600 mb-6">
+                        Set your availability schedule so patients can book appointments with you.
+                    </p>
+                    <a href="{% url 'appointments:availability_create' %}" 
+                       class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                        <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                        Add Your First Availability
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Setup -->
+        {% if not availabilities %}
+            <div class="clinic-card rounded-xl p-8 mt-8">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">Quick Setup</h2>
+                <p class="text-slate-600 mb-6">
+                    Set up a standard Monday-Friday schedule with one click:
+                </p>
+                
+                <form method="post" action="{% url 'appointments:availability_create' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="quick_setup" value="true">
+                    <button type="submit" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                        <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
+                        Set Standard Hours (9 AM - 5 PM, Mon-Fri)
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+        <!-- Availability Guidelines -->
+        <div class="clinic-card rounded-xl p-8 mt-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Availability Guidelines</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Best Practices</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-600 mt-1 flex-shrink-0"></i>
+                            <span>Set consistent weekly schedules</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-600 mt-1 flex-shrink-0"></i>
+                            <span>Update availability in advance</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-600 mt-1 flex-shrink-0"></i>
+                            <span>Block time for breaks and admin work</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Important Notes</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Patients can only book during active hours</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Changes take effect immediately</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Existing appointments are not affected</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{
+    "css.validate": false,
+    "scss.validate": false,
+    "less.validate": false,
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "tailwindCSS.includeLanguages": {
+        "css": "css"
+    },
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "css.customData": [
+        {
+            "version": 1.1,
+            "atDirectives": [
+                {
+                    "name": "@apply",
+                    "description": "Use @apply to inline any existing utility classes into your own custom CSS."
+                },
+                {
+                    "name": "@variants",
+                    "description": "Generate responsive, hover, focus, active, and other variants of your own utilities."
+                },
+                {
+                    "name": "@responsive",
+                    "description": "Generate responsive variants of your own utilities."
+                },
+                {
+                    "name": "@screen",
+                    "description": "Create media queries that reference your breakpoints by name."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+/* Icon Styles for Baby Moms Care Clinic */
+
+/* Base icon styles */
+.icon-wrapper {
+    @apply flex items-center justify-center rounded-full w-12 h-12 mx-auto mb-4;
+    background: linear-gradient(135deg, #e11d8b 0%, #f43f5e 100%);
+}
+
+.icon {
+    @apply w-6 h-6 text-white;
+}
+
+/* Role-specific icon wrappers */
+.mother-icon {
+    background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%);
+}
+
+.doctor-icon {
+    background: linear-gradient(135deg, #f472b6 0%, #e11d8b 100%);
+}
+
+.admin-icon {
+    background: linear-gradient(135deg, #e11d8b 0%, #c026d3 100%);
+}
+
+/* Feature-specific icons */
+.icon-appointment {
+    @apply w-6 h-6 text-white;
+}
+
+.icon-baby {
+    @apply w-6 h-6 text-white;
+}
+
+.icon-community {
+    @apply w-6 h-6 text-white;
+}
+
+.icon-settings {
+    @apply w-6 h-6 text-white;
+}
+
+/* Status indicators */
+.status-icon {
+    @apply w-4 h-4;
+}
+
+.status-active {
+    @apply text-green-500;
+}
+
+.status-pending {
+    @apply text-yellow-500;
+}
+
+.status-inactive {
+    @apply text-gray-400;
+}
+
+/* Navigation icons */
+.nav-icon {
+    @apply w-5 h-5 text-slate-600 group-hover:text-rose-600 transition-colors;
+}
+
+/* Profile icons */
+.profile-icon {
+    @apply w-5 h-5 text-slate-600 group-hover:text-rose-600 mr-3 flex-shrink-0;
+}
+
+/* Button icons */
+.btn-icon {
+    @apply w-4 h-4 mr-2;
+}

@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notifications - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900 mb-2">Notifications</h1>
+                    <p class="text-slate-600">Stay updated with your medical appointments and health information</p>
+                </div>
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center">
+                    <i data-lucide="bell" class="w-8 h-8 text-white"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Actions -->
+        <div class="clinic-card rounded-xl p-6 mb-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <span class="text-slate-700 font-medium">
+                        {% if notifications %}
+                            {{ notifications.count }} notification{{ notifications.count|pluralize }}
+                        {% else %}
+                            No notifications
+                        {% endif %}
+                    </span>
+                    {% if notifications %}
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                            {{ notifications|length }} total
+                        </span>
+                    {% endif %}
+                </div>
+                {% if notifications %}
+                    <div class="flex space-x-3">
+                        <button onclick="markAllAsRead()" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                            Mark All as Read
+                        </button>
+                        <button onclick="clearAll()" class="text-red-600 hover:text-red-500 font-medium text-sm">
+                            Clear All
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Notifications List -->
+        {% if notifications %}
+            <div class="space-y-4">
+                {% for notification in notifications %}
+                    <div class="clinic-card rounded-xl p-6 {% if not notification.is_read %}border-l-4 border-blue-500 bg-blue-50/30{% endif %}">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="clinic-icon w-12 h-12 rounded-full flex items-center justify-center">
+                                    {% if notification.notification_type == 'appointment' %}
+                                        <i data-lucide="calendar" class="w-6 h-6 text-white"></i>
+                                    {% elif notification.notification_type == 'health' %}
+                                        <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+                                    {% elif notification.notification_type == 'reminder' %}
+                                        <i data-lucide="clock" class="w-6 h-6 text-white"></i>
+                                    {% elif notification.notification_type == 'system' %}
+                                        <i data-lucide="settings" class="w-6 h-6 text-white"></i>
+                                    {% else %}
+                                        <i data-lucide="bell" class="w-6 h-6 text-white"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-semibold text-slate-900 mb-1">
+                                            {{ notification.title }}
+                                            {% if not notification.is_read %}
+                                                <span class="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
+                                            {% endif %}
+                                        </h3>
+                                        <p class="text-slate-600 mb-3">{{ notification.message }}</p>
+                                        
+                                        <div class="flex items-center space-x-4 text-sm text-slate-500">
+                                            <span class="flex items-center">
+                                                <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
+                                                {{ notification.created_at|timesince }} ago
+                                            </span>
+                                            {% if notification.notification_type %}
+                                                <span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-medium">
+                                                    {{ notification.get_notification_type_display|default:notification.notification_type|title }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2 ml-4">
+                                        {% if not notification.is_read %}
+                                            <a href="{% url 'accounts:mark_notification_read' notification.id %}" 
+                                               class="text-blue-600 hover:text-blue-500 text-sm font-medium">
+                                                Mark as Read
+                                            </a>
+                                        {% endif %}
+                                        <button onclick="deleteNotification({{ notification.id }})" 
+                                                class="text-red-600 hover:text-red-500 text-sm font-medium">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <div class="flex justify-center mt-8">
+                    <nav class="flex items-center space-x-2">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" 
+                               class="px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">
+                                Previous
+                            </a>
+                        {% endif %}
+                        
+                        <span class="px-4 py-2 text-slate-700">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" 
+                               class="px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">
+                                Next
+                            </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            {% endif %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="clinic-card rounded-xl p-12 text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                    <i data-lucide="bell-off" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900 mb-2">No Notifications</h3>
+                <p class="text-slate-600 mb-6">
+                    You're all caught up! New notifications about appointments, health updates, and important information will appear here.
+                </p>
+                <a href="{% url 'accounts:dashboard' %}" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                    <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Notification Settings -->
+        <div class="clinic-card rounded-xl p-8 mt-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Notification Preferences</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Appointment Reminders</h4>
+                            <p class="text-sm text-slate-600">Get notified about upcoming appointments</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Health Updates</h4>
+                            <p class="text-sm text-slate-600">Receive health tips and medical updates</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-slate-900">System Notifications</h4>
+                            <p class="text-sm text-slate-600">Important system updates and announcements</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Email Notifications</h4>
+                            <p class="text-sm text-slate-600">Receive notifications via email</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function markAllAsRead() {
+    // Implementation for marking all notifications as read
+    if (confirm('Mark all notifications as read?')) {
+        // Add AJAX call here
+        location.reload();
+    }
+}
+
+function clearAll() {
+    if (confirm('Are you sure you want to clear all notifications? This action cannot be undone.')) {
+        // Add AJAX call here
+        location.reload();
+    }
+}
+
+function deleteNotification(id) {
+    if (confirm('Delete this notification?')) {
+        // Add AJAX call here
+        location.reload();
+    }
+}
+</script>
+{% endblock %}

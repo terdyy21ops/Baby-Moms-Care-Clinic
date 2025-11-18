@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register - Baby Moms Care Clinic{% endblock %}
+
+{% block extra_css %}
+<style>
+body {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4">
+    <div class="max-w-lg w-full space-y-8">
+        <!-- Header -->
+        <div class="text-center">
+            <div class="mx-auto w-24 h-24 mb-6 shadow-lg rounded-full overflow-hidden bg-white">
+                <img src="{% static 'images/logo.png' %}" alt="Baby Moms Care Clinic Logo" class="w-full h-full object-contain">
+            </div>
+            <h1 class="text-4xl font-bold text-slate-900 mb-2">Baby Moms Care</h1>
+            <h2 class="text-xl font-semibold text-slate-700 mb-2">Clinic Registration</h2>
+            <p class="text-slate-600">Join our medical community</p>
+        </div>
+        
+        <!-- Registration Form -->
+        <div class="clinic-card rounded-2xl p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Display form errors -->
+                {% if form.non_field_errors %}
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 mr-2"></i>
+                            <p class="text-red-800 font-medium">{{ form.non_field_errors.0 }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="space-y-4">
+                    <!-- Name Fields -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="id_first_name" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">First Name</label>
+                            <input type="text" 
+                                   name="first_name" 
+                                   id="id_first_name"
+                                   class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                   placeholder="First name"
+                                   value="{{ form.first_name.value|default:'' }}"
+                                   required>
+                            {% if form.first_name.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="id_last_name" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Last Name</label>
+                            <input type="text" 
+                                   name="last_name" 
+                                   id="id_last_name"
+                                   class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                   placeholder="Last name"
+                                   value="{{ form.last_name.value|default:'' }}"
+                                   required>
+                            {% if form.last_name.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Username Field -->
+                    <div>
+                        <label for="id_username" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Username</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="user" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <input type="text" 
+                                   name="username" 
+                                   id="id_username"
+                                   class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                   placeholder="Choose a username"
+                                   value="{{ form.username.value|default:'' }}"
+                                   required>
+                        </div>
+                        {% if form.username.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email Field -->
+                    <div>
+                        <label for="id_email" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="mail" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <input type="email" 
+                                   name="email" 
+                                   id="id_email"
+                                   class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                   placeholder="Enter your email"
+                                   value="{{ form.email.value|default:'' }}"
+                                   required>
+                        </div>
+                        {% if form.email.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Role Field -->
+                    <div>
+                        <label for="id_role" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Role</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="briefcase" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <select name="role" 
+                                    id="id_role"
+                                    class="clinic-select w-full pl-12 pr-4 py-3 rounded-xl text-slate-900"
+                                    required>
+                                <option value="">Select your role</option>
+                                {% for value, label in form.role.field.choices %}
+                                    <option value="{{ value }}" {% if form.role.value == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form.role.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.role.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Phone Field -->
+                    <div>
+                        <label for="id_phone" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Phone Number <span class="text-slate-500 normal-case">(Optional)</span></label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="phone" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <input type="tel" 
+                                   name="phone" 
+                                   id="id_phone"
+                                   class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                   placeholder="Phone number"
+                                   value="{{ form.phone.value|default:'' }}">
+                        </div>
+                        {% if form.phone.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.phone.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="id_password1" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+                                </div>
+                                <input type="password" 
+                                       name="password1" 
+                                       id="id_password1"
+                                       class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                       placeholder="Create password"
+                                       required>
+                            </div>
+                            {% if form.password1.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.password1.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="id_password2" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Confirm</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+                                </div>
+                                <input type="password" 
+                                       name="password2" 
+                                       id="id_password2"
+                                       class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                       placeholder="Confirm password"
+                                       required>
+                            </div>
+                            {% if form.password2.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.password2.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Terms Agreement -->
+                <div class="flex items-start pt-2">
+                    <input type="checkbox" id="terms" name="terms" required class="w-4 h-4 text-pink-600 border-slate-300 rounded focus:ring-pink-500">
+                    <label for="terms" class="ml-3 text-sm text-slate-600 font-medium">
+                        I agree to the <a href="#" class="text-pink-600 hover:text-pink-500 font-semibold">Terms of Service</a> 
+                        and <a href="#" class="text-pink-600 hover:text-pink-500 font-semibold">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-pink-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-pink-700 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-pink-300 focus:ring-opacity-50 flex items-center justify-center space-x-2">
+                    <i data-lucide="user-plus" class="w-5 h-5 mr-2"></i>
+                    Create Clinic Account
+                </button>
+            </form>
+        </div>
+        
+        <!-- Login Link -->
+        <div class="text-center">
+            <p class="text-slate-600">
+                Already have an account? 
+                <a href="{% url 'accounts:login' %}" class="font-semibold text-pink-600 hover:text-pink-500 transition-colors">
+                    Sign in here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

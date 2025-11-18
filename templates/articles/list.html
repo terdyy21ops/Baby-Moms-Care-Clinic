@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Health Articles - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="book-open" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-slate-900 mb-4">Health Articles</h1>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">
+                    Expert-verified articles and resources to support you through your motherhood journey
+                </p>
+            </div>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="clinic-card rounded-xl p-6 mb-8">
+            <form method="get" class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                        </div>
+                        <input type="text" 
+                               name="search" 
+                               value="{{ search_query|default:'' }}"
+                               placeholder="Search articles..."
+                               class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl">
+                    </div>
+                </div>
+                <div class="md:w-64">
+                    <select name="category" class="clinic-select w-full px-4 py-3 rounded-xl">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.slug }}" {% if category.slug == category_slug %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold">
+                    <i data-lucide="search" class="w-4 h-4 mr-2"></i>
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Articles Grid -->
+        {% if articles %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for article in articles %}
+                    <article class="clinic-card rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+                        {% if article.featured_image %}
+                            <div class="aspect-w-16 aspect-h-9">
+                                <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" 
+                                     class="w-full h-48 object-cover">
+                            </div>
+                        {% else %}
+                            <div class="h-48 clinic-icon flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-12 h-12 text-white"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                {% if article.category %}
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                                        {{ article.category.name }}
+                                    </span>
+                                {% endif %}
+                                <span class="text-xs text-slate-500">
+                                    {{ article.created_at|date:"M d, Y" }}
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold text-slate-900 mb-3 line-clamp-2">
+                                <a href="{% url 'articles:detail' article.slug %}" class="hover:text-blue-600 transition-colors">
+                                    {{ article.title }}
+                                </a>
+                            </h3>
+                            
+                            <p class="text-slate-600 text-sm mb-4 line-clamp-3">
+                                {{ article.excerpt|default:article.content|truncatewords:20 }}
+                            </p>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                                        <i data-lucide="user" class="w-4 h-4 text-slate-600"></i>
+                                    </div>
+                                    <span class="text-sm text-slate-600">{{ article.author.get_full_name }}</span>
+                                </div>
+                                <a href="{% url 'articles:detail' article.slug %}" 
+                                   class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                                    Read More →
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <div class="flex justify-center mt-12">
+                    <nav class="flex items-center space-x-2">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" 
+                               class="px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">
+                                Previous
+                            </a>
+                        {% endif %}
+                        
+                        <span class="px-4 py-2 text-slate-700">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" 
+                               class="px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">
+                                Next
+                            </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="clinic-card rounded-xl p-12 text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                    <i data-lucide="file-x" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900 mb-2">No Articles Found</h3>
+                <p class="text-slate-600 mb-6">
+                    {% if search_query %}
+                        No articles match your search criteria. Try different keywords.
+                    {% else %}
+                        No articles are available at the moment. Check back soon!
+                    {% endif %}
+                </p>
+                {% if search_query %}
+                    <a href="{% url 'articles:list' %}" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold">
+                        View All Articles
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

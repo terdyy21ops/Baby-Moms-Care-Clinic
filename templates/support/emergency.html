@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Emergency Contacts - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="phone-call" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-slate-900 mb-4">Emergency Contacts</h1>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">
+                    Important emergency numbers and contacts for immediate medical assistance
+                </p>
+            </div>
+        </div>
+        
+        <!-- Emergency Alert -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl mb-8">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-red-800">Life-Threatening Emergency</h3>
+                    <p class="text-red-700 mt-2">
+                        If you are experiencing a life-threatening medical emergency, call 911 immediately.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Emergency Numbers -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- 911 Emergency -->
+            <div class="clinic-card rounded-xl p-6 border-l-4 border-red-500">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="phone" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">911</h3>
+                        <p class="text-slate-600">Life-Threatening Emergency</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm">
+                    For immediate life-threatening emergencies including severe bleeding, difficulty breathing, chest pain, or loss of consciousness.
+                </p>
+            </div>
+
+            <!-- Clinic Emergency Line -->
+            <div class="clinic-card rounded-xl p-6 border-l-4 border-blue-500">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-full flex items-center justify-center">
+                        <i data-lucide="stethoscope" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">(555) 123-CARE</h3>
+                        <p class="text-slate-600">24/7 Clinic Emergency Line</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm">
+                    For urgent maternal health concerns, pregnancy complications, or medical questions that need immediate attention.
+                </p>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="clinic-card rounded-xl p-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Emergency Contact Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-blue-600 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Clinic Address</h4>
+                            <p class="text-slate-600">123 Healthcare Drive<br>Medical District<br>City, State 12345</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <i data-lucide="clock" class="w-6 h-6 text-blue-600 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Emergency Hours</h4>
+                            <p class="text-slate-600">24/7 Emergency Support<br>Always available for urgent care</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <i data-lucide="mail" class="w-6 h-6 text-blue-600 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Emergency Email</h4>
+                            <p class="text-slate-600">emergency@babymomscare.com<br>For non-urgent emergency follow-up</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <i data-lucide="message-circle" class="w-6 h-6 text-blue-600 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Live Chat</h4>
+                            <p class="text-slate-600">Available 24/7 for urgent questions<br>Access through patient portal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- When to Call -->
+        <div class="clinic-card rounded-xl p-8 mt-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">When to Seek Emergency Care</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4 text-red-600">Call 911 Immediately For:</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1 flex-shrink-0"></i>
+                            <span>Severe chest pain or difficulty breathing</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1 flex-shrink-0"></i>
+                            <span>Heavy vaginal bleeding</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1 flex-shrink-0"></i>
+                            <span>Severe abdominal pain</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1 flex-shrink-0"></i>
+                            <span>Loss of consciousness</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1 flex-shrink-0"></i>
+                            <span>Signs of stroke or heart attack</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4 text-blue-600">Call Clinic Emergency Line For:</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-500 mt-1 flex-shrink-0"></i>
+                            <span>Pregnancy complications</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-500 mt-1 flex-shrink-0"></i>
+                            <span>Unusual symptoms during pregnancy</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-500 mt-1 flex-shrink-0"></i>
+                            <span>Postpartum concerns</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-500 mt-1 flex-shrink-0"></i>
+                            <span>Baby health concerns</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-500 mt-1 flex-shrink-0"></i>
+                            <span>Medication questions</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

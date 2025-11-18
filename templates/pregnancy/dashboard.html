@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pregnancy Dashboard - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-6 md:mb-0">
+                    <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-4">
+                        <i data-lucide="baby" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-slate-900 mb-2">Pregnancy Journey</h1>
+                    <p class="text-slate-600 text-lg">Track your pregnancy progress and stay healthy</p>
+                </div>
+                
+                {% if active_pregnancy %}
+                    <div class="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 text-center">
+                        <div class="text-3xl font-bold text-pink-600 mb-1">{{ active_pregnancy.weeks_pregnant }}</div>
+                        <div class="text-sm text-slate-600 mb-2">Weeks Pregnant</div>
+                        <div class="text-lg font-semibold text-slate-900">{{ active_pregnancy.trimester }} Trimester</div>
+                        {% if active_pregnancy.due_date %}
+                            <div class="text-sm text-slate-600 mt-2">Due: {{ active_pregnancy.due_date }}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Pregnancy Progress -->
+                <div class="clinic-card rounded-2xl p-8">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Pregnancy Progress</h2>
+                    
+                    {% if active_pregnancy %}
+                        <!-- Progress Bar -->
+                        <div class="mb-8">
+                            <div class="flex justify-between text-sm text-slate-600 mb-2">
+                                <span>Week {{ active_pregnancy.weeks_pregnant }} of 40</span>
+                                <span>{{ active_pregnancy.progress_percentage }}% Complete</span>
+                            </div>
+                            <div class="w-full focus:ring-pink-500 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-pink-500 to-rose-500 h-3 rounded-full transition-all duration-500" 
+                                     style="width: {{ active_pregnancy.progress_percentage }}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Current Week Info -->
+                        <div class="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-slate-900 mb-3">Week {{ active_pregnancy.weeks_pregnant }} Highlights</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="font-medium text-slate-800 mb-2">Baby's Development</h4>
+                                    <p class="text-slate-600 text-sm">
+                                        {% if active_pregnancy.weeks_pregnant <= 12 %}
+                                            Your baby is developing major organs and body systems. The heart is beating and limbs are forming.
+                                        {% elif active_pregnancy.weeks_pregnant <= 24 %}
+                                            Your baby is growing rapidly and developing reflexes. You may start feeling movements soon!
+                                        {% else %}
+                                            Your baby is gaining weight and preparing for life outside the womb. Lungs are developing.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-slate-800 mb-2">What to Expect</h4>
+                                    <p class="text-slate-600 text-sm">
+                                        {% if active_pregnancy.weeks_pregnant <= 12 %}
+                                            You may experience morning sickness and fatigue. Take prenatal vitamins and rest when needed.
+                                        {% elif active_pregnancy.weeks_pregnant <= 24 %}
+                                            Energy levels may improve. Continue regular checkups and maintain a healthy diet.
+                                        {% else %}
+                                            You may feel more tired as your baby grows. Prepare for delivery and practice breathing exercises.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Health Metrics -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-pink-50 rounded-xl p-4 text-center">
+                                <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="scale" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div class="text-lg font-semibold text-slate-900">{{ active_pregnancy.current_weight|default:"--" }} lbs</div>
+                                <div class="text-sm text-slate-600">Current Weight</div>
+                            </div>
+                            <div class="bg-pink-50 rounded-xl p-4 text-center">
+                                <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div class="text-lg font-semibold text-slate-900">{{ active_pregnancy.weight_gain|default:"--" }} lbs</div>
+                                <div class="text-sm text-slate-600">Weight Gain</div>
+                            </div>
+                            <div class="bg-pink-50 rounded-xl p-4 text-center">
+                                <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div class="text-lg font-semibold text-slate-900">{{ active_pregnancy.days_until_due|default:"--" }}</div>
+                                <div class="text-sm text-slate-600">Days Until Due</div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- No Pregnancy Profile -->
+                        <div class="text-center py-12">
+                            <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                                <i data-lucide="baby" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">Start Your Pregnancy Journey</h3>
+                            <p class="text-slate-600 mb-6">
+                                Create your pregnancy profile to track your progress and get personalized care.
+                            </p>
+                            <a href="{% url 'pregnancy:create' %}" 
+                               class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                                <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                                Create Pregnancy Profile
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recent Appointments -->
+                <div class="clinic-card rounded-2xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-slate-900">Recent Appointments</h2>
+                        <a href="{% url 'appointments:list' %}" class="text-pink-600 hover:text-pink-600 font-medium">View All</a>
+                    </div>
+                    
+                    {% if recent_appointments %}
+                        <div class="space-y-4">
+                            {% for appointment in recent_appointments %}
+                                <div class="bg-pink-50 rounded-xl p-4 flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="calendar" class="w-5 h-5 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-slate-900">Dr. {{ appointment.doctor.get_full_name }}</div>
+                                            <div class="text-sm text-slate-600">{{ appointment.date }} at {{ appointment.time }}</div>
+                                            <div class="text-xs text-pink-600">{{ appointment.get_appointment_type_display }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="px-3 py-1 rounded-full text-xs font-medium
+                                            {% if appointment.status == 'completed' %}bg-green-100 text-green-800
+                                            {% elif appointment.status == 'confirmed' %}bg-pink-100 text-pink-600
+                                            {% elif appointment.status == 'scheduled' %}bg-yellow-100 text-yellow-800
+                                            {% else %}bg-slate-100 text-slate-800{% endif %}">
+                                            {{ appointment.get_status_display }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <div class="clinic-icon w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                                <i data-lucide="calendar-x" class="w-6 h-6 text-white"></i>
+                            </div>
+                            <p class="text-slate-600 mb-4">No recent appointments</p>
+                            <a href="{% url 'appointments:create' %}" 
+                               class="clinic-btn px-4 py-2 rounded-lg text-white font-medium inline-flex items-center">
+                                <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                                Book Appointment
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+                <!-- Quick Actions -->
+                <div class="clinic-card rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'appointments:create' %}" 
+                           class="w-full clinic-btn py-3 px-4 rounded-xl text-white font-medium inline-flex items-center justify-center">
+                            <i data-lucide="calendar-plus" class="w-4 h-4 mr-2"></i>
+                            Book Appointment
+                        </a>
+                        <a href="{% url 'pregnancy:dashboard' %}" 
+                           class="w-full bg-pink-600 hover:bg-pink-700 py-3 px-4 rounded-xl text-white font-medium inline-flex items-center justify-center">
+                            <i data-lucide="heart" class="w-4 h-4 mr-2"></i>
+                            Track Symptoms
+                        </a>
+                        <a href="{% url 'articles:list' %}?category=pregnancy" 
+                           class="w-full bg-slate-600 hover:bg-pink-500 py-3 px-4 rounded-xl text-white font-medium inline-flex items-center justify-center">
+                            <i data-lucide="book-open" class="w-4 h-4 mr-2"></i>
+                            Pregnancy Articles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Health Tips -->
+                <div class="clinic-card rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4">Health Tips</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <i data-lucide="droplets" class="w-5 h-5 text-pink-600 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-medium text-slate-900 text-sm">Stay Hydrated</h4>
+                                <p class="text-slate-600 text-xs">Drink at least 8-10 glasses of water daily</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i data-lucide="apple" class="w-5 h-5 text-green-600 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-medium text-slate-900 text-sm">Eat Nutritiously</h4>
+                                <p class="text-slate-600 text-xs">Focus on fruits, vegetables, and whole grains</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i data-lucide="moon" class="w-5 h-5 text-purple-600 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-medium text-slate-900 text-sm">Get Enough Rest</h4>
+                                <p class="text-slate-600 text-xs">Aim for 7-9 hours of sleep each night</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i data-lucide="activity" class="w-5 h-5 text-orange-600 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-medium text-slate-900 text-sm">Stay Active</h4>
+                                <p class="text-slate-600 text-xs">Light exercise like walking is beneficial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="clinic-card rounded-2xl p-6 border-l-4 border-pink-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4">Emergency Contact</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-red-600"></i>
+                            <div>
+                                <div class="font-semibold text-slate-900">24/7 Emergency Line</div>
+                                <div class="text-slate-600">(555) 123-CARE</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Call immediately for severe symptoms, bleeding, or concerns about your baby's movements.
+                        </p>
+                        <a href="{% url 'support:emergency' %}" 
+                           class="text-red-600 hover:text-red-500 font-medium text-sm">
+                            View Emergency Guidelines →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

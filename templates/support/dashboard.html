@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Support Center - Baby Moms Care{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="text-center">
+        <h1 class="text-4xl font-serif font-bold text-gray-800 mb-4">Support Center</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            We're here to help you every step of the way. Find answers, get support, and access emergency resources.
+        </p>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a href="{% url 'support:emergency' %}" class="card hover-lift hover-glow transition-all duration-200">
+            <div class="card-body text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="phone" class="w-8 h-8 text-red-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">Emergency Contacts</h3>
+                <p class="text-sm text-gray-600">Quick access to emergency numbers and contacts</p>
+            </div>
+        </a>
+        
+        <a href="{% url 'support:faq' %}" class="card hover-lift hover-glow transition-all duration-200">
+            <div class="card-body text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="help-circle" class="w-8 h-8 text-blue-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">FAQ</h3>
+                <p class="text-sm text-gray-600">Frequently asked questions and answers</p>
+            </div>
+        </a>
+        
+        <a href="{% url 'support:resources' %}" class="card hover-lift hover-glow transition-all duration-200">
+            <div class="card-body text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="external-link" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">Resources</h3>
+                <p class="text-sm text-gray-600">Helpful links and external resources</p>
+            </div>
+        </a>
+        
+        <a href="{% url 'support:chat' %}" class="card hover-lift hover-glow transition-all duration-200">
+            <div class="card-body text-center">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="message-square" class="w-8 h-8 text-purple-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">Live Chat</h3>
+                <p class="text-sm text-gray-600">Chat with our support team</p>
+            </div>
+        </a>
+    </div>
+    
+    <!-- Support Categories -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <i data-lucide="life-buoy" class="w-5 h-5 mr-2 text-pink-500"></i>
+                    Get Help
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    <a href="{% url 'support:ticket_create' %}" class="flex items-center justify-between p-4 hover:bg-pink-50 rounded-lg transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="plus-circle" class="w-5 h-5 text-pink-500"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Create Support Ticket</h3>
+                                <p class="text-sm text-gray-600">Get personalized help from our team</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                    </a>
+                    
+                    <a href="{% url 'support:ticket_list' %}" class="flex items-center justify-between p-4 hover:bg-pink-50 rounded-lg transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="list" class="w-5 h-5 text-pink-500"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">My Support Tickets</h3>
+                                <p class="text-sm text-gray-600">View and track your support requests</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <i data-lucide="bookmark" class="w-5 h-5 mr-2 text-pink-500"></i>
+                    Quick Resources
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    <a href="{% url 'articles:list' %}" class="flex items-center justify-between p-4 hover:bg-pink-50 rounded-lg transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="book-open" class="w-5 h-5 text-pink-500"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Health Articles</h3>
+                                <p class="text-sm text-gray-600">Expert-verified health information</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                    </a>
+                    
+                    <a href="{% url 'support:contact_list' %}" class="flex items-center justify-between p-4 hover:bg-pink-50 rounded-lg transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="users" class="w-5 h-5 text-pink-500"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">My Contacts</h3>
+                                <p class="text-sm text-gray-600">Manage your emergency contacts</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

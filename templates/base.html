@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Baby Moms Care{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'baby-pink': '#FDDDE6',
+                        'soft-white': '#FFFFFF',
+                        'lavender-gray': '#C3B1E1',
+                        'accent-coral': '#F8AFA6',
+                        'pink-50': '#FDF2F8',
+                        'pink-100': '#FCE7F3',
+                        'pink-200': '#FBCFE8',
+                        'pink-300': '#F9A8D4',
+                        'pink-400': '#F472B6',
+                        'pink-500': '#EC4899',
+                        'pink-600': '#DB2777',
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="gradient-secondary min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg border-b border-pink-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{% url 'accounts:dashboard' %}" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center">
+                            <img src="{% static 'images/logo.png' %}" alt="Baby Moms Care Clinic Logo" class="w-full h-full object-contain">
+                        </div>
+                        <span class="font-sans text-2xl font-bold text-slate-800">Baby Moms Care Clinic</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                {% if user.is_authenticated %}
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{% url 'accounts:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="stethoscope" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Home</span>
+                    </a>
+                    <a href="{% url 'appointments:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="calendar-days" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Appointments</span>
+                    </a>
+                    {% if user.userprofile.role == 'mother' %}
+                    <a href="{% url 'pregnancy:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="baby" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Pregnancy</span>
+                    </a>
+                    <a href="{% url 'babytracker:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Baby Tracker</span>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'articles:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="book-open" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Articles</span>
+                    </a>
+                    <a href="{% url 'forum:category_list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Community</span>
+                    </a>
+                    <a href="{% url 'support:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                            <i data-lucide="life-buoy" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Support</span>
+                    </a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center space-x-3">
+                    <!-- Notifications -->
+                    <a href="{% url 'accounts:notifications' %}" class="relative p-2.5 rounded-xl hover:bg-rose-50 transition-colors group">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
+                            <i data-lucide="bell-ring" class="w-5 h-5 text-rose-600"></i>
+                        </div>
+                        {% if unread_count > 0 %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </a>
+                    
+                    <!-- User Profile Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-3 p-2 rounded-xl hover:bg-rose-50 transition-all duration-200 border border-transparent hover:border-rose-200 group">
+                            {% if user.userprofile.profile_picture %}
+                            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-10 h-10 rounded-full object-cover border-2 border-rose-200">
+                            {% else %}
+                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center group-hover:bg-rose-50 transition-colors">
+                                <i data-lucide="users" class="w-5 h-5 text-rose-600"></i>
+                            </div>
+                            {% endif %}
+                            <span class="hidden md:inline text-sm font-medium text-slate-700 group-hover:text-rose-600 transition-colors">{{ user.get_full_name|default:user.username }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 group-hover:text-rose-600 transition-colors"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-rose-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                            <!-- User Info Header -->
+                            <div class="p-4 border-b border-slate-100 bg-gradient-to-r from-rose-50 to-slate-50 rounded-t-xl">
+                                <div class="flex items-center space-x-3">
+                                    {% if user.userprofile.profile_picture %}
+                                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                                    {% else %}
+                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center shadow-inner">
+                                        <i data-lucide="user-circle" class="w-6 h-6 text-rose-600"></i>
+                                    </div>
+                                    {% endif %}
+                                    <div class="min-w-0">
+                                        <p class="font-medium text-slate-900 truncate">{{ user.get_full_name|default:user.username }}</p>
+                                        <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
+                                        <span class="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-rose-100 text-rose-800 rounded-full">
+                                            {{ user.userprofile.get_role_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="py-2">
+                                <a href="{% url 'accounts:profile' %}" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
+                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
+                                        <i data-lucide="user" class="w-4 h-4 text-rose-600"></i>
+                                    </div>
+                                    <span class="group-hover:text-rose-600 transition-colors">My Profile</span>
+                                </a>
+                                <a href="#" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
+                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
+                                        <i data-lucide="settings-2" class="w-4 h-4 text-rose-600"></i>
+                                    </div>
+                                    <span class="group-hover:text-rose-600 transition-colors">Settings</span>
+                                </a>
+                                <a href="#" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
+                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
+                                        <i data-lucide="help-circle" class="w-4 h-4 text-rose-600"></i>
+                                    </div>
+                                    <span class="group-hover:text-rose-600 transition-colors">Help & Support</span>
+                                <div class="border-t border-slate-100 my-2"></div>
+                                
+                                <a href="{% url 'support:faq' %}" class="flex items-center space-x-3 px-4 py-3 text-slate-700 hover:bg-pink-50 hover:text-pink-700 transition-colors">
+                                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                                    <span class="font-medium">Help & Support</span>
+                                </a>
+                                
+                                <div class="border-t border-slate-100 my-2"></div>
+                                
+                                <a href="{% url 'accounts:logout' %}" class="flex items-center space-x-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors rounded-b-xl">
+                                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                                    <span class="font-medium">Sign Out</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'accounts:login' %}" class="text-slate-600 hover:text-pink-600 font-medium transition-colors flex items-center">
+                        <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
+                        Login
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="bg-gradient-to-r from-pink-600 to-pink-500 text-white px-6 py-2 rounded-xl hover:from-pink-700 hover:to-pink-600 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center">
+                        <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i>
+                        Sign Up
+                    </a>
+                </div>
+                {% endif %}
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-slate-600 hover:text-pink-600 focus:outline-none focus:text-pink-600 transition-colors" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mb-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    {% if message.tags == 'success' %}
+                    <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                    {% elif message.tags == 'error' %}
+                    <i data-lucide="x-circle" class="w-5 h-5 mr-2"></i>
+                    {% elif message.tags == 'warning' %}
+                    <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i>
+                    {% else %}
+                    <i data-lucide="info" class="w-5 h-5 mr-2"></i>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 fade-in">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Loading Component -->
+    {% include 'components/loading.html' %}
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t border-pink-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-pink-400 to-accent-coral rounded-full flex items-center justify-center">
+                            <i data-lucide="heart" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="font-serif text-xl font-bold text-gray-800">Baby Moms Care</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Supporting mothers through every step of their journey with comprehensive care, community, and resources.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'articles:list' %}" class="footer-link">Health Articles</a></li>
+                        <li><a href="{% url 'forum:category_list' %}" class="footer-link">Community</a></li>
+                        <li><a href="{% url 'support:faq' %}" class="footer-link">FAQ</a></li>
+                        <li><a href="{% url 'support:resources' %}" class="footer-link">Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'support:ticket_create' %}" class="footer-link">Contact Us</a></li>
+                        <li><a href="{% url 'support:emergency' %}" class="footer-link">Emergency Contacts</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-200 mt-8 pt-8 text-center text-slate-600">
+                <p>&copy; 2024 Baby Moms Care. All rights reserved. Made with ❤️ for mothers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Initialize Lucide Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            // Add animation to all icons
+            document.querySelectorAll('i[data-lucide]').forEach(icon => {
+                icon.classList.add('transition-transform', 'duration-200', 'hover:scale-110');
+            });
+        });
+        
+        // Mobile menu toggle function
+        function toggleMobileMenu() {
+            // This is a placeholder for mobile menu functionality
+            // In a full implementation, you would show/hide a mobile menu
+            console.log('Mobile menu toggle clicked');
+        }
+        
+        // Enhanced page interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation classes to cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('slide-up');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all cards
+            document.querySelectorAll('.clinic-card, .card').forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Add click feedback to buttons
+            document.querySelectorAll('.btn, .clinic-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // Auto-hide alerts after 5 seconds
+            document.querySelectorAll('.alert').forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Baby Moms Care Clinic{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Base card styles */
+.clinic-gradient {
+    background: linear-gradient(135deg, #e11d8b 0%, #f43f5e 100%);
+}
+
+.clinic-stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid #fce7f3;
+    box-shadow: 0 10px 30px rgba(236, 72, 153, 0.08);
+    transition: all 0.3s ease;
+}
+
+.clinic-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(236, 72, 153, 0.15);
+}
+
+.clinic-action-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid #fce7f3;
+    transition: all 0.3s ease;
+}
+
+.clinic-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(236, 72, 153, 0.12);
+    border-color: #e11d8b;
+}
+
+/* Feature cards */
+.feature-card {
+    @apply p-6 rounded-xl transition-all duration-300 hover:shadow-lg;
+    border: 1px solid #fce7f3;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+}
+
+.mother-feature {
+    @apply border-l-4 border-pink-400;
+}
+
+.doctor-feature {
+    @apply border-l-4 border-rose-500;
+}
+
+.admin-feature {
+    @apply border-l-4 border-purple-500;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <!-- Welcome Header -->
+        <div class="clinic-gradient rounded-2xl p-8 text-white shadow-xl">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center space-x-6 mb-6 md:mb-0">
+                    <div class="relative">
+                        {% if user.userprofile.profile_picture %}
+                            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg">
+                        {% else %}
+                            <div class="icon-wrapper mother-icon">
+                                <i data-lucide="user" class="w-8 h-8"></i>
+                            </div>
+                        {% endif %}
+                        <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h1 class="text-3xl font-bold mb-2">
+                            Welcome back, {{ user.get_full_name|default:user.username }}!
+                        </h1>
+                        <p class="text-pink-100 text-lg">
+                            {% if user_profile.role == 'mother' %}
+                                Your healthcare journey continues here. Track your progress and stay connected with your medical team.
+                            {% elif user_profile.role == 'doctor' %}
+                                Manage patient care and provide comprehensive maternal healthcare services.
+                            {% else %}
+                                Monitor the clinic platform and support the healthcare community.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white/30 backdrop-blur-sm rounded-xl p-4 border border-white/40">
+                        <div class="text-2xl font-bold mb-1">{{ user_profile.get_role_display }}</div>
+                        <div class="text-pink-100 text-sm">Active Status</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% if user_profile.role == 'mother' %}
+                <a href="#" class="feature-card mother-feature text-center block">
+                    <div class="icon-wrapper mother-icon">
+                        <i data-lucide="calendar-plus" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Book Appointment</h3>
+                    <p class="text-slate-600 text-sm">Schedule your next medical visit</p>
+                </a>
+            
+                <a href="#" class="feature-card mother-feature text-center block">
+                    <div class="icon-wrapper mother-icon">
+                        <i data-lucide="baby" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Pregnancy Tracker</h3>
+                    <p class="text-slate-600 text-sm">Monitor your pregnancy journey</p>
+                </a>
+                
+                <a href="#" class="feature-card mother-feature text-center block">
+                    <div class="icon-wrapper mother-icon">
+                        <i data-lucide="baby-bottle" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Baby Care</h3>
+                    <p class="text-slate-600 text-sm">Track growth & milestones</p>
+                </a>
+                
+                <a href="#" class="feature-card mother-feature text-center block">
+                    <div class="icon-wrapper mother-icon">
+                        <i data-lucide="users" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Community</h3>
+                    <p class="text-slate-600 text-sm">Connect with other mothers</p>
+                </a>
+            {% elif user_profile.role == 'doctor' %}
+                <a href="#" class="feature-card doctor-feature text-center block">
+                    <div class="icon-wrapper doctor-icon">
+                        <i data-lucide="clipboard-check" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Appointments</h3>
+                    <p class="text-slate-600 text-sm">Manage patient appointments</p>
+                </a>
+                
+                <a href="#" class="feature-card doctor-feature text-center block">
+                    <div class="icon-wrapper doctor-icon">
+                        <i data-lucide="stethoscope" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Patient Care</h3>
+                    <p class="text-slate-600 text-sm">Review patient records</p>
+                </a>
+                
+                <a href="#" class="feature-card doctor-feature text-center block">
+                    <div class="icon-wrapper doctor-icon">
+                        <i data-lucide="file-medical" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Medical Records</h3>
+                    <p class="text-slate-600 text-sm">Access patient history</p>
+                </a>
+                
+                <a href="#" class="feature-card doctor-feature text-center block">
+                    <div class="icon-wrapper doctor-icon">
+                        <i data-lucide="calendar-clock" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Schedule</h3>
+                    <p class="text-slate-600 text-sm">Manage availability</p>
+                </a>
+            {% else %}
+                <a href="#" class="feature-card admin-feature text-center block">
+                    <div class="icon-wrapper admin-icon">
+                        <i data-lucide="users" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">User Management</h3>
+                    <p class="text-slate-600 text-sm">Manage clinic users</p>
+                </a>
+                
+                <a href="#" class="feature-card admin-feature text-center block">
+                    <div class="icon-wrapper admin-icon">
+                        <i data-lucide="bar-chart-horizontal" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Analytics</h3>
+                    <p class="text-slate-600 text-sm">View clinic statistics</p>
+                </a>
+                
+                <a href="#" class="feature-card admin-feature text-center block">
+                    <div class="icon-wrapper admin-icon">
+                        <i data-lucide="settings-2" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Settings</h3>
+                    <p class="text-slate-600 text-sm">Configure clinic settings</p>
+                </a>
+                
+                <a href="#" class="feature-card admin-feature text-center block">
+                    <div class="icon-wrapper admin-icon">
+                        <i data-lucide="shield-check" class="icon"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 text-lg mb-2">Security</h3>
+                    <p class="text-slate-600 text-sm">Monitor system security</p>
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="clinic-stat-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-slate-900 mb-1">
+                            {% if user_profile.role == 'mother' %}
+                                {{ upcoming_appointments|length|default:0 }}
+                            {% elif user_profile.role == 'doctor' %}
+                                {{ today_appointments|length|default:0 }}
+                            {% else %}
+                                {{ total_users|default:0 }}
+                            {% endif %}
+                        </div>
+                        <div class="text-slate-600 text-sm font-medium">
+                            {% if user_profile.role == 'mother' %}
+                                Upcoming Appointments
+                            {% elif user_profile.role == 'doctor' %}
+                                Today's Appointments
+                            {% else %}
+                                Total Users
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        {% if user_profile.role == 'mother' %}
+                            <i data-lucide="calendar" class="w-6 h-6 text-white"></i>
+                        {% elif user_profile.role == 'doctor' %}
+                            <i data-lucide="clock" class="w-6 h-6 text-white"></i>
+                        {% else %}
+                            <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="clinic-stat-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-slate-900 mb-1">
+                            {% if user_profile.role == 'mother' %}
+                                {{ pregnancy_logs|length|default:0 }}
+                            {% elif user_profile.role == 'doctor' %}
+                                {{ upcoming_appointments|length|default:0 }}
+                            {% else %}
+                                {{ total_mothers|default:0 }}
+                            {% endif %}
+                        </div>
+                        <div class="text-slate-600 text-sm font-medium">
+                            {% if user_profile.role == 'mother' %}
+                                Health Records
+                            {% elif user_profile.role == 'doctor' %}
+                                Upcoming Appointments
+                            {% else %}
+                                Total Mothers
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        {% if user_profile.role == 'mother' %}
+                            <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
+                        {% elif user_profile.role == 'doctor' %}
+                            <i data-lucide="calendar-check" class="w-6 h-6 text-white"></i>
+                        {% else %}
+                            <i data-lucide="baby" class="w-6 h-6 text-white"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="clinic-stat-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-slate-900 mb-1">{{ unread_count|default:0 }}</div>
+                        <div class="text-slate-600 text-sm font-medium">Notifications</div>
+                    </div>
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="bell" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="clinic-stat-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Recent Activity</h2>
+                <a href="#" class="text-pink-600 hover:text-pink-500 font-medium">View All</a>
+            </div>
+            
+            {% if notifications %}
+                <div class="space-y-4">
+                    {% for notification in notifications %}
+                        <div class="flex items-start space-x-4 p-4 {% if not notification.is_read %}bg-blue-50{% endif %} rounded-lg">
+                            <div class="clinic-icon w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="bell" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-semibold text-slate-900">{{ notification.title }}</h4>
+                                <p class="text-slate-600 text-sm mt-1">{{ notification.message|truncatechars:100 }}</p>
+                                <p class="text-slate-500 text-xs mt-2">{{ notification.created_at|timesince }} ago</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                        <i data-lucide="bell-off" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-2">No Recent Activity</h3>
+                    <p class="text-slate-600">Your recent notifications and updates will appear here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

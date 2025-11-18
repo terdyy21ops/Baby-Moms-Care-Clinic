@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Community Forum - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="users" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-slate-900 mb-4">Community Forum</h1>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">
+                    Connect with other mothers, share experiences, and get support from our caring community
+                </p>
+            </div>
+        </div>
+        
+        <!-- Forum Categories -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Pregnancy Support -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="baby" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">Pregnancy Support</h3>
+                        <p class="text-sm text-slate-600">24 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    Share your pregnancy journey, ask questions, and get support from other expecting mothers.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+
+            <!-- New Mom Tips -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="heart-handshake" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">New Mom Tips</h3>
+                        <p class="text-sm text-slate-600">18 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    Tips, tricks, and advice for new mothers navigating the early days with their babies.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+
+            <!-- Health & Wellness -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">Health & Wellness</h3>
+                        <p class="text-sm text-slate-600">31 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    Discuss maternal health, nutrition, exercise, and wellness during and after pregnancy.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+
+            <!-- Baby Development -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">Baby Development</h3>
+                        <p class="text-sm text-slate-600">15 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    Track milestones, discuss development concerns, and celebrate your baby's growth.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+
+            <!-- General Support -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="message-circle" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">General Support</h3>
+                        <p class="text-sm text-slate-600">42 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    General discussions, introductions, and community support for all members.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+
+            <!-- Ask the Experts -->
+            <div class="clinic-card rounded-xl p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                        <i data-lucide="stethoscope" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-900">Ask the Experts</h3>
+                        <p class="text-sm text-slate-600">12 discussions</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">
+                    Get professional medical advice from our certified doctors and healthcare professionals.
+                </p>
+                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    Join Discussion →
+                </a>
+            </div>
+        </div>
+
+        <!-- Community Guidelines -->
+        <div class="clinic-card rounded-xl p-8 mt-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Community Guidelines</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <i data-lucide="heart" class="w-5 h-5 text-blue-500 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Be Kind & Supportive</h4>
+                            <p class="text-sm text-slate-600">Treat all community members with respect and empathy.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-blue-500 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Share Safely</h4>
+                            <p class="text-sm text-slate-600">Protect your privacy and avoid sharing personal medical information.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <i data-lucide="message-square" class="w-5 h-5 text-blue-500 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Stay On Topic</h4>
+                            <p class="text-sm text-slate-600">Keep discussions relevant to maternal and infant health.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-blue-500 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">Seek Professional Help</h4>
+                            <p class="text-sm text-slate-600">For urgent medical concerns, contact healthcare professionals immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Appointment - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="calendar-check" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">Update Appointment</h1>
+                <p class="text-slate-600">Modify appointment details and status</p>
+            </div>
+        </div>
+
+        <!-- Appointment Update Form -->
+        <div class="clinic-card rounded-2xl p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Display form errors -->
+                {% if form.non_field_errors %}
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 mr-2"></i>
+                            <p class="text-red-800 font-medium">{{ form.non_field_errors.0 }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Appointment Info (Read-only) -->
+                <div class="bg-slate-50 rounded-xl p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Appointment Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Patient</label>
+                            <p class="text-slate-900">{{ appointment.patient.get_full_name }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Doctor</label>
+                            <p class="text-slate-900">Dr. {{ appointment.doctor.get_full_name }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Date</label>
+                            <p class="text-slate-900">{{ appointment.date }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Time</label>
+                            <p class="text-slate-900">{{ appointment.time }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                            <p class="text-slate-900">{{ appointment.get_appointment_type_display }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Duration</label>
+                            <p class="text-slate-900">{{ appointment.duration_minutes }} minutes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Status -->
+                    <div>
+                        <label for="id_status" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Status</label>
+                        <select name="status" id="id_status" class="clinic-select w-full px-4 py-3 rounded-xl text-slate-900" required>
+                            {% for value, label in form.status.field.choices %}
+                                <option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.status.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.status.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Notes -->
+                    <div>
+                        <label for="id_notes" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Notes <span class="text-slate-500 normal-case">(Optional)</span></label>
+                        <textarea name="notes" id="id_notes" rows="4" 
+                                  class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                  placeholder="Add any notes about this appointment...">{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.notes.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="clinic-btn flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg">
+                        <div class="flex items-center justify-center">
+                            <i data-lucide="save" class="w-5 h-5 mr-2"></i>
+                            Update Appointment
+                        </div>
+                    </button>
+                    <a href="{% url 'appointments:detail' appointment.pk %}" 
+                       class="bg-slate-600 hover:bg-slate-700 flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg text-center">
+                        <div class="flex items-center justify-center">
+                            <i data-lucide="x" class="w-5 h-5 mr-2"></i>
+                            Cancel
+                        </div>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

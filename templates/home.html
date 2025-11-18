@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Moms Care Clinic</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-rose': '#e11d8f',
+                        'secondary-pink': '#f472b6',
+                        'accent-rose': '#f43f5e',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%);
+        }
+        
+        .clinic-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .clinic-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(225, 29, 143, 0.15);
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-secondary {
+            border: 2px solid #e11d8f;
+            color: #e11d8f;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #e11d8f;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-pink-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg border-b border-blue-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="h-12 w-auto flex items-center">
+                        <img src="{% static 'images/logo.png' %}" alt="Baby Moms Care Clinic Logo" class="h-full w-auto">
+                    </div>
+                    <span class="font-bold text-2xl text-slate-800 ml-3">Baby Moms Care Clinic</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#features" class="text-slate-600 hover:text-rose-600 font-medium transition-colors">Features</a>
+                    <a href="#services" class="text-slate-600 hover:text-rose-600 font-medium transition-colors">Services</a>
+                    <a href="#about" class="text-slate-600 hover:text-rose-600 font-medium transition-colors">About</a>
+                    <a href="/accounts/login/" class="btn-secondary px-4 py-2 rounded-lg font-medium">Login</a>
+                    <a href="/accounts/register/" class="btn-primary px-4 py-2 rounded-lg text-white font-medium">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Professional
+                        <span class="text-pink-200">Maternal</span>
+                        Healthcare
+                    </h1>
+                    <p class="text-xl text-pink-100 mb-8 leading-relaxed">
+                        Comprehensive care for mothers and babies with advanced medical tracking, 
+                        expert consultations, and a supportive community platform.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="/accounts/register/" class="bg-white text-rose-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-pink-50 transition-all duration-300 hover:transform hover:-translate-y-1">
+                            <i data-lucide="user-plus" class="w-5 h-5 mr-2 inline"></i>
+                            Join Our Clinic
+                        </a>
+                        <a href="/accounts/login/" class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white hover:text-rose-600 transition-all duration-300">
+                            <i data-lucide="log-in" class="w-5 h-5 mr-2 inline"></i>
+                            Patient Portal
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="floating-animation">
+                        <div class="w-80 h-80 mx-auto bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <i data-lucide="heart-pulse" class="w-32 h-32 text-white/80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Comprehensive Care Platform</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Advanced medical technology meets compassionate care in our integrated healthcare platform
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pregnancy Tracking -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="baby" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Pregnancy Tracking</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Monitor your pregnancy journey with detailed tracking, milestone alerts, and personalized health insights.
+                    </p>
+                </div>
+                
+                <!-- Doctor Consultations -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="user-check" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Expert Consultations</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Connect with certified maternal health specialists for professional medical guidance and support.
+                    </p>
+                </div>
+                
+                <!-- Health Records -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="file-text" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Digital Health Records</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Secure, comprehensive medical records accessible anytime, anywhere for you and your healthcare team.
+                    </p>
+                </div>
+                
+                <!-- Appointment Scheduling -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="calendar-check" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Smart Scheduling</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Easy appointment booking with automated reminders and seamless calendar integration.
+                    </p>
+                </div>
+                
+                <!-- Community Support -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="users" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Community Support</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Connect with other mothers, share experiences, and get support from our caring community.
+                    </p>
+                </div>
+                
+                <!-- Emergency Care -->
+                <div class="clinic-card rounded-2xl p-8 text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="phone-call" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">24/7 Emergency Support</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Round-the-clock emergency support with direct access to medical professionals when you need it most.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gradient-to-br from-pink-50 to-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Our Medical Services</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Comprehensive maternal and infant healthcare services delivered by certified medical professionals
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="heart" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">Prenatal Care</h3>
+                            <p class="text-slate-600">Comprehensive prenatal monitoring and care throughout your pregnancy journey.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">Health Monitoring</h3>
+                            <p class="text-slate-600">Advanced monitoring systems to track vital signs and health metrics.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">Preventive Care</h3>
+                            <p class="text-slate-600">Proactive healthcare measures to ensure the best outcomes for mother and baby.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="clinic-card rounded-2xl p-8">
+                        <div class="pulse-animation">
+                            <i data-lucide="stethoscope" class="w-24 h-24 text-rose-600 mx-auto mb-6"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">Professional Medical Care</h3>
+                        <p class="text-slate-600 mb-6">
+                            Our certified medical professionals provide world-class care using the latest medical technology and evidence-based practices.
+                        </p>
+                        <a href="/accounts/register/" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold inline-flex items-center">
+                            <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                            Schedule Consultation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">About Baby Moms Care Clinic</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Dedicated to providing exceptional maternal and infant healthcare with compassion, expertise, and innovation.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-slate-900">Our Mission</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        At Baby Moms Care Clinic, we believe every mother deserves the highest quality healthcare throughout her journey. 
+                        Our mission is to provide comprehensive, compassionate, and personalized care that supports both mother and baby 
+                        from conception through early childhood.
+                    </p>
+                    
+                    <h3 class="text-2xl font-bold text-slate-900">Why Choose Us?</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="feature-icon w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="award" class="w-4 h-4 text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900">Expert Medical Team</h4>
+                                <p class="text-slate-600">Board-certified specialists with years of experience in maternal healthcare.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="feature-icon w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="heart" class="w-4 h-4 text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900">Compassionate Care</h4>
+                                <p class="text-slate-600">We understand the emotional journey of motherhood and provide supportive, empathetic care.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="feature-icon w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="zap" class="w-4 h-4 text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900">Advanced Technology</h4>
+                                <p class="text-slate-600">State-of-the-art medical equipment and digital health tracking systems.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="clinic-card rounded-2xl p-8">
+                        <div class="feature-icon w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="heart" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">Trusted by Thousands</h3>
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600">5000+</div>
+                                <div class="text-sm text-slate-600">Happy Mothers</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600">50+</div>
+                                <div class="text-sm text-slate-600">Medical Experts</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600">10+</div>
+                                <div class="text-sm text-slate-600">Years Experience</div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-6">
+                            Join our community of mothers who have experienced the difference that quality, 
+                            compassionate healthcare makes in their journey.
+                        </p>
+                        <a href="/accounts/register/" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold inline-flex items-center">
+                            <i data-lucide="users" class="w-5 h-5 mr-2"></i>
+                            Join Our Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="hero-gradient text-white py-20">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold mb-6">Ready to Start Your Healthcare Journey?</h2>
+            <p class="text-xl text-blue-100 mb-8">
+                Join thousands of mothers who trust Baby Moms Care Clinic for their maternal healthcare needs.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/accounts/register/" class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-all duration-300 hover:transform hover:-translate-y-1">
+                    <i data-lucide="user-plus" class="w-5 h-5 mr-2 inline"></i>
+                    Create Account
+                </a>
+                <a href="/accounts/login/" class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300">
+                    <i data-lucide="log-in" class="w-5 h-5 mr-2 inline"></i>
+                    Access Portal
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full flex items-center justify-center">
+                            <i data-lucide="heart" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="font-bold text-xl">Baby Moms Care Clinic</span>
+                    </div>
+                    <p class="text-slate-400 mb-4 max-w-md">
+                        Professional maternal healthcare with compassionate care, advanced technology, and comprehensive support for mothers and babies.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/accounts/login/" class="text-slate-400 hover:text-white transition-colors">Patient Portal</a></li>
+                        <li><a href="/accounts/register/" class="text-slate-400 hover:text-white transition-colors">Register</a></li>
+                        <li><a href="/admin/" class="text-slate-400 hover:text-white transition-colors">Admin Panel</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-white mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Emergency</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
+                <p>&copy; 2024 Baby Moms Care Clinic. All rights reserved. Professional maternal healthcare you can trust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

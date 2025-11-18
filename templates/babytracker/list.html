@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Baby Tracker - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-6 md:mb-0">
+                    <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-4">
+                        <i data-lucide="baby" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-slate-900 mb-2">Baby Tracker</h1>
+                    <p class="text-slate-600 text-lg">Monitor your baby's growth, feeding, sleep, and milestones</p>
+                </div>
+                <a href="{% url 'babytracker:create' %}" 
+                   class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                    Add Baby
+                </a>
+            </div>
+        </div>
+        
+        <!-- Babies List -->
+        {% if babies %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for baby in babies %}
+                    <div class="clinic-card rounded-2xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-center mb-6">
+                            {% if baby.photo %}
+                                <img src="{{ baby.photo.url }}" alt="{{ baby.name }}" 
+                                     class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-4 border-blue-200 shadow-lg">
+                            {% else %}
+                                <div class="w-24 h-24 bg-gradient-to-r from-pink-400 to-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                    <i data-lucide="baby" class="w-12 h-12 text-white"></i>
+                                </div>
+                            {% endif %}
+                            <h3 class="text-2xl font-bold text-slate-900 mb-1">{{ baby.name }}</h3>
+                            <p class="text-blue-600 font-medium text-lg">{{ baby.age_display }}</p>
+                        </div>
+                        
+                        <!-- Baby Stats -->
+                        <div class="bg-slate-50 rounded-xl p-4 mb-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="{% if baby.gender == 'male' %}user{% else %}user{% endif %}" class="w-5 h-5 text-white"></i>
+                                    </div>
+                                    <div class="text-sm text-slate-600">Gender</div>
+                                    <div class="font-semibold text-slate-900">{{ baby.get_gender_display }}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="clinic-icon w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="scale" class="w-5 h-5 text-white"></i>
+                                    </div>
+                                    <div class="text-sm text-slate-600">Birth Weight</div>
+                                    <div class="font-semibold text-slate-900">{{ baby.birth_weight|default:"--" }} kg</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-slate-200">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+                                    <span class="text-sm text-slate-600">Born on</span>
+                                    <span class="font-semibold text-slate-900">{{ baby.birth_date }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-3 gap-2 mb-6">
+                            <div class="bg-green-50 rounded-lg p-3 text-center">
+                                <i data-lucide="coffee" class="w-5 h-5 text-green-600 mx-auto mb-1"></i>
+                                <div class="text-xs text-green-600">Feeding</div>
+                                <div class="font-semibold text-green-800">{{ baby.feeding_count|default:"0" }}</div>
+                            </div>
+                            <div class="bg-purple-50 rounded-lg p-3 text-center">
+                                <i data-lucide="moon" class="w-5 h-5 text-purple-600 mx-auto mb-1"></i>
+                                <div class="text-xs text-purple-600">Sleep</div>
+                                <div class="font-semibold text-purple-800">{{ baby.sleep_hours|default:"0" }}h</div>
+                            </div>
+                            <div class="bg-orange-50 rounded-lg p-3 text-center">
+                                <i data-lucide="star" class="w-5 h-5 text-orange-600 mx-auto mb-1"></i>
+                                <div class="text-xs text-orange-600">Milestones</div>
+                                <div class="font-semibold text-orange-800">{{ baby.milestone_count|default:"0" }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-3">
+                            <a href="{% url 'babytracker:detail' baby.pk %}" 
+                               class="clinic-btn flex-1 py-3 px-4 rounded-xl text-white font-semibold text-center inline-flex items-center justify-center">
+                                <i data-lucide="eye" class="w-4 h-4 mr-2"></i>
+                                View Details
+                            </a>
+                            <a href="{% url 'babytracker:update' baby.pk %}" 
+                               class="bg-slate-600 hover:bg-slate-700 py-3 px-4 rounded-xl text-white font-semibold inline-flex items-center justify-center">
+                                <i data-lucide="edit" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="clinic-card rounded-2xl p-12 text-center">
+                <div class="clinic-icon w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 opacity-75">
+                    <i data-lucide="baby" class="w-10 h-10 text-white"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">No Babies Added Yet</h2>
+                <p class="text-slate-600 mb-8 max-w-2xl mx-auto text-lg">
+                    Start tracking your baby's growth, feeding, sleep patterns, and milestones by adding your first baby profile. 
+                    Monitor their development and create lasting memories of their journey.
+                </p>
+                <a href="{% url 'babytracker:create' %}" 
+                   class="clinic-btn px-8 py-4 rounded-xl text-white font-semibold text-lg inline-flex items-center">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                    Add Your First Baby
+                </a>
+                
+                <!-- Features Preview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                    <div class="bg-slate-50 rounded-xl p-6">
+                        <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 mb-2">Growth Tracking</h3>
+                        <p class="text-slate-600 text-sm">Monitor weight, height, and development milestones</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-6">
+                        <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="clock" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 mb-2">Daily Activities</h3>
+                        <p class="text-slate-600 text-sm">Track feeding, sleeping, and diaper changes</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-6">
+                        <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="camera" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 mb-2">Photo Memories</h3>
+                        <p class="text-slate-600 text-sm">Capture and organize precious moments</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

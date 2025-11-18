@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Appointments - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900 mb-2">
+                        {% if user.userprofile.role == 'mother' %}
+                            My Appointments
+                        {% elif user.userprofile.role == 'doctor' %}
+                            Patient Appointments
+                        {% else %}
+                            All Appointments
+                        {% endif %}
+                    </h1>
+                    <p class="text-pink-600">Manage your medical appointments and schedule</p>
+                </div>
+                {% if user.userprofile.role == 'mother' %}
+                    <a href="{% url 'appointments:create' %}" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                        <i data-lucide="calendar-plus" class="w-5 h-5 mr-2"></i>
+                        Book Appointment
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="clinic-card rounded-xl p-6 mb-8">
+            <form method="GET" class="flex flex-wrap gap-4 items-center">
+                <div class="flex-1 min-w-64">
+                    <input type="text" name="search" value="{{ request.GET.search }}" 
+                           placeholder="Search appointments..." 
+                           class="clinic-input w-full px-4 py-2 rounded-lg">
+                </div>
+                <select name="status" class="clinic-select px-4 py-2 rounded-lg">
+                    <option value="">All Status</option>
+                    <option value="scheduled" {% if request.GET.status == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                    <option value="confirmed" {% if request.GET.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+                    <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+                <button type="submit" class="clinic-btn px-6 py-2 rounded-lg text-white font-medium">
+                    <i data-lucide="search" class="w-4 h-4 mr-2"></i>
+                    Filter
+                </button>
+            </form>
+        </div>
+
+        <!-- Appointments List -->
+        {% if appointments %}
+            <div class="space-y-4">
+                {% for appointment in appointments %}
+                    <div class="clinic-card rounded-xl p-6">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
+                            <div class="flex items-start space-x-4 mb-4 md:mb-0">
+                                <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    {% if user.userprofile.role == 'mother' %}
+                                        <i data-lucide="stethoscope" class="w-6 h-6 text-white"></i>
+                                    {% else %}
+                                        <i data-lucide="user" class="w-6 h-6 text-white"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-900 mb-1">
+                                        {% if user.userprofile.role == 'mother' %}
+                                            Dr. {{ appointment.doctor.get_full_name }}
+                                        {% else %}
+                                            {{ appointment.patient.get_full_name }}
+                                        {% endif %}
+                                    </h3>
+                                    <p class="text-pink-600 mb-2">{{ appointment.get_appointment_type_display }}</p>
+                                    <div class="flex items-center space-x-4 text-sm text-slate-500">
+                                        <span class="flex items-center">
+                                            <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
+                                            {{ appointment.date }}
+                                        </span>
+                                        <span class="flex items-center">
+                                            <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
+                                            {{ appointment.time }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium
+                                    {% if appointment.status == 'scheduled' %}bg-yellow-100 text-yellow-800
+                                    {% elif appointment.status == 'confirmed' %}bg-pink-100 text-pink-800
+                                    {% elif appointment.status == 'completed' %}bg-green-100 text-green-800
+                                    {% else %}bg-red-100 text-red-800{% endif %}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                                <a href="{% url 'appointments:detail' appointment.pk %}" 
+                                   class="text-pink-600 hover:text-pink-600 font-medium">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <div class="flex justify-center mt-8">
+                    <nav class="flex items-center space-x-2">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" 
+                               class="px-3 py-2 rounded-lg bg-white border border-pink-200 text-slate-700 hover:ring-pink-500">
+                                Previous
+                            </a>
+                        {% endif %}
+                        
+                        <span class="px-3 py-2 text-slate-700">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" 
+                               class="px-3 py-2 rounded-lg bg-white border border-pink-200 text-slate-700 hover:ring-pink-500">
+                                Next
+                            </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="clinic-card rounded-xl p-12 text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                    <i data-lucide="calendar-x" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900 mb-2">No Appointments Found</h3>
+                <p class="text-pink-600 mb-6">
+                    {% if user.userprofile.role == 'mother' %}
+                        You don't have any appointments scheduled yet.
+                    {% else %}
+                        No appointments match your current filters.
+                    {% endif %}
+                </p>
+                {% if user.userprofile.role == 'mother' %}
+                    <a href="{% url 'appointments:create' %}" class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center">
+                        <i data-lucide="calendar-plus" class="w-5 h-5 mr-2"></i>
+                        Book Your First Appointment
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

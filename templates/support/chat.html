@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Live Chat - Baby Moms Care{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="text-center">
+        <h1 class="text-4xl font-serif font-bold text-gray-800 mb-4">Live Chat Support</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            Chat with our support team for immediate assistance
+        </p>
+    </div>
+    
+    <!-- Coming Soon -->
+    <div class="card">
+        <div class="card-body text-center py-12">
+            <div class="w-20 h-20 bg-gradient-to-r from-pink-400 to-accent-coral rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="message-square" class="w-10 h-10 text-white"></i>
+            </div>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Live Chat Coming Soon!</h2>
+            <p class="text-gray-600 mb-6 max-w-md mx-auto">
+                We're setting up our live chat system to provide you with real-time support.
+            </p>
+            <a href="{% url 'support:dashboard' %}" class="btn btn-primary">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                Back to Support
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

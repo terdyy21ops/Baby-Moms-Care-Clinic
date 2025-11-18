@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Appointment Calendar - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="calendar" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">Appointment Calendar</h1>
+                <p class="text-slate-600">View available appointment slots and book your visit</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+            <a href="{% url 'appointments:create' %}" 
+               class="clinic-btn px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center justify-center">
+                <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                Book New Appointment
+            </a>
+            <a href="{% url 'appointments:list' %}" 
+               class="bg-slate-600 hover:bg-slate-700 px-6 py-3 rounded-xl text-white font-semibold inline-flex items-center justify-center">
+                <i data-lucide="list" class="w-5 h-5 mr-2"></i>
+                My Appointments
+            </a>
+        </div>
+
+        <!-- Doctor Availability Information -->
+        <div class="clinic-card rounded-xl p-8 mb-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Doctor Availability</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for doctor in doctors %}
+                    <div class="bg-slate-50 rounded-xl p-6">
+                        <div class="flex items-center space-x-4 mb-4">
+                            {% if doctor.userprofile.profile_picture %}
+                                <img src="{{ doctor.userprofile.profile_picture.url }}" alt="Dr. {{ doctor.get_full_name }}" 
+                                     class="w-12 h-12 rounded-full object-cover border-2 border-blue-200">
+                            {% else %}
+                                <div class="w-12 h-12 clinic-icon rounded-full flex items-center justify-center">
+                                    <i data-lucide="user-check" class="w-6 h-6 text-white"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h3 class="font-semibold text-slate-900">Dr. {{ doctor.get_full_name }}</h3>
+                                <p class="text-sm text-slate-600">{{ doctor.userprofile.specialization|default:"General Practice" }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-slate-800 text-sm">Available Hours:</h4>
+                            {% if doctor.availabilities.exists %}
+                                {% for availability in doctor.availabilities.all %}
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-slate-600">{{ availability.get_day_of_week_display }}</span>
+                                        <span class="text-slate-900 font-medium">{{ availability.start_time }} - {{ availability.end_time }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-sm text-slate-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                                <p class="text-xs text-slate-500">(Default hours - will be set automatically when booking)</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'appointments:create' %}?doctor={{ doctor.id }}" 
+                               class="w-full clinic-btn py-2 px-4 rounded-lg text-white font-medium text-sm inline-flex items-center justify-center">
+                                <i data-lucide="calendar-plus" class="w-4 h-4 mr-2"></i>
+                                Book with Dr. {{ doctor.last_name }}
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-span-full text-center py-12">
+                        <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
+                            <i data-lucide="user-x" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-900 mb-2">No Doctors Available</h3>
+                        <p class="text-slate-600">Please contact support to set up doctor accounts.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Booking Guidelines -->
+        <div class="clinic-card rounded-xl p-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Booking Guidelines</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Available Times</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="clock" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Monday - Friday: 9:00 AM - 5:00 PM</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="calendar-x" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Weekends: Currently unavailable</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="timer" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Appointment duration: 30 minutes</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Booking Tips</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="calendar-check" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>Book at least 24 hours in advance</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="bell" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>You'll receive confirmation notifications</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-600 mt-1 flex-shrink-0"></i>
+                            <span>For urgent needs, call our emergency line</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Out - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Logout Confirmation -->
+        <div class="clinic-card rounded-2xl p-8 text-center">
+            <div class="w-20 h-20 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <i data-lucide="log-out" class="w-10 h-10 text-white"></i>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-slate-900 mb-4">Sign Out</h1>
+            <p class="text-slate-600 mb-8">
+                Are you sure you want to sign out of your Baby Moms Care Clinic account?
+            </p>
+            
+            <!-- User Info -->
+            <div class="bg-slate-50 rounded-xl p-4 mb-8">
+                <div class="flex items-center justify-center space-x-3">
+                    {% if user.userprofile.profile_picture %}
+                        <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-slate-300">
+                    {% else %}
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-white"></i>
+                        </div>
+                    {% endif %}
+                    <div class="text-left">
+                        <div class="font-semibold text-slate-900">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="text-sm text-slate-600">{{ user.email }}</div>
+                        <div class="text-xs text-blue-600 font-medium">{{ user.userprofile.get_role_display }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logout Actions -->
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-red-700 hover:to-red-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    <div class="flex items-center justify-center">
+                        <i data-lucide="log-out" class="w-5 h-5 mr-2"></i>
+                        Yes, Sign Me Out
+                    </div>
+                </button>
+                
+                <a href="{% url 'accounts:dashboard' %}" class="w-full bg-slate-600 hover:bg-slate-700 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 block">
+                    <div class="flex items-center justify-center">
+                        <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+                        Cancel, Stay Signed In
+                    </div>
+                </a>
+            </form>
+            
+            <!-- Security Note -->
+            <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"></i>
+                    <div class="text-left">
+                        <h4 class="font-semibold text-blue-900 text-sm">Security Reminder</h4>
+                        <p class="text-blue-700 text-xs mt-1">
+                            Always sign out when using shared or public computers to protect your medical information.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Access -->
+        <div class="clinic-card rounded-xl p-6 mt-6">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4 text-center">Before You Go</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{% url 'appointments:list' %}" class="flex flex-col items-center p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    <i data-lucide="calendar" class="w-6 h-6 text-blue-600 mb-2"></i>
+                    <span class="text-sm font-medium text-slate-700">Check Appointments</span>
+                </a>
+                <a href="{% url 'accounts:notifications' %}" class="flex flex-col items-center p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    <i data-lucide="bell" class="w-6 h-6 text-blue-600 mb-2"></i>
+                    <span class="text-sm font-medium text-slate-700">View Notifications</span>
+                </a>
+                <a href="{% url 'support:emergency' %}" class="flex flex-col items-center p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    <i data-lucide="phone" class="w-6 h-6 text-blue-600 mb-2"></i>
+                    <span class="text-sm font-medium text-slate-700">Emergency Contacts</span>
+                </a>
+                <a href="{% url 'accounts:profile' %}" class="flex flex-col items-center p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    <i data-lucide="user-circle" class="w-6 h-6 text-blue-600 mb-2"></i>
+                    <span class="text-sm font-medium text-slate-700">Update Profile</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - Baby Moms Care Clinic{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="clinic-card rounded-2xl p-8 mb-8">
+            <div class="text-center">
+                <div class="clinic-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="calendar-plus" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">Book an Appointment</h1>
+                <p class="text-slate-600">Schedule your visit with our medical professionals</p>
+            </div>
+        </div>
+
+        <!-- Appointment Form -->
+        <div class="clinic-card rounded-2xl p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Display form errors -->
+                {% if form.non_field_errors %}
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 mr-2"></i>
+                            <p class="text-red-800 font-medium">{{ form.non_field_errors.0 }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="space-y-4">
+                    <!-- Doctor Selection -->
+                    <div>
+                        <label for="id_doctor" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Select Doctor</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="stethoscope" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <select name="doctor" id="id_doctor" class="clinic-select w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" required>
+                                <option value="">Choose a doctor</option>
+                                {% for value, label in form.doctor.field.choices %}
+                                    {% if value %}
+                                        <option value="{{ value }}" {% if form.doctor.value == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form.doctor.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.doctor.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Appointment Type -->
+                    <div>
+                        <label for="id_appointment_type" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Appointment Type</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="clipboard-list" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <select name="appointment_type" id="id_appointment_type" class="clinic-select w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" required>
+                                <option value="">Select appointment type</option>
+                                {% for value, label in form.appointment_type.field.choices %}
+                                    {% if value %}
+                                        <option value="{{ value }}" {% if form.appointment_type.value == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form.appointment_type.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.appointment_type.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Date and Time -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="id_date" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Preferred Date</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-slate-400"></i>
+                                </div>
+                                <input type="date" name="date" id="id_date" 
+                                       class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
+                                       value="{{ form.date.value|default:'' }}" required>
+                            </div>
+                            {% if form.date.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.date.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="id_time" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Preferred Time</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="clock" class="w-5 h-5 text-slate-400"></i>
+                                </div>
+                                <input type="time" name="time" id="id_time" 
+                                       class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
+                                       value="{{ form.time.value|default:'' }}" required>
+                            </div>
+                            {% if form.time.errors %}
+                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.time.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Duration -->
+                    <div>
+                        <label for="id_duration_minutes" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Duration (minutes)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="timer" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <input type="number" name="duration_minutes" id="id_duration_minutes" 
+                                   class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
+                                   value="{{ form.duration_minutes.value|default:'30' }}" min="15" max="120" step="15">
+                        </div>
+                        {% if form.duration_minutes.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.duration_minutes.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Reason -->
+                    <div>
+                        <label for="id_reason" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Reason for Visit <span class="text-slate-500 normal-case">(Optional)</span></label>
+                        <textarea name="reason" id="id_reason" rows="4" 
+                                  class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
+                                  placeholder="Describe your symptoms or reason for visit (optional)">{{ form.reason.value|default:'' }}</textarea>
+                        {% if form.reason.errors %}
+                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.reason.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="clinic-btn flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg">
+                        <div class="flex items-center justify-center">
+                            <i data-lucide="calendar-check" class="w-5 h-5 mr-2"></i>
+                            Book Appointment
+                        </div>
+                    </button>
+                    <a href="{% url 'appointments:list' %}" 
+                       class="bg-slate-600 hover:bg-slate-700 flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg text-center">
+                        <div class="flex items-center justify-center">
+                            <i data-lucide="x" class="w-5 h-5 mr-2"></i>
+                            Cancel
+                        </div>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Information Card -->
+        <div class="clinic-card rounded-2xl p-6 mt-8">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4">Important Information</h3>
+            <div class="space-y-3 text-sm text-slate-600">
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="info" class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"></i>
+                    <p>Appointments are subject to doctor availability and will be confirmed within 24 hours.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="clock" class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"></i>
+                    <p>Please arrive 15 minutes early for your appointment.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="phone" class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"></i>
+                    <p>For urgent medical concerns, please contact our emergency line immediately.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
