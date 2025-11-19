@@ -52,7 +52,7 @@
 <body class="gradient-secondary min-h-screen font-sans">
     <!-- Navigation -->
     <nav class="bg-white/95 backdrop-blur-sm shadow-lg border-b border-pink-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
@@ -66,47 +66,47 @@
                 
                 <!-- Navigation Links -->
                 {% if user.is_authenticated %}
-                <div class="hidden md:flex items-center space-x-2">
-                    <a href="{% url 'accounts:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{% url 'accounts:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="stethoscope" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Home</span>
                     </a>
-                    <a href="{% url 'appointments:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'appointments:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="calendar-days" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Appointments</span>
                     </a>
                     {% if user.userprofile.role == 'mother' %}
-                    <a href="{% url 'pregnancy:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'pregnancy:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="baby" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Pregnancy</span>
                     </a>
-                    <a href="{% url 'babytracker:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'babytracker:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Baby Tracker</span>
                     </a>
                     {% endif %}
-                    <a href="{% url 'articles:list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'articles:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="book-open" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Articles</span>
                     </a>
-                    <a href="{% url 'forum:category_list' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'forum:category_list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="message-circle" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Community</span>
                     </a>
-                    <a href="{% url 'support:dashboard' %}" class="group flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-2 rounded-lg bg-rose-50 group-hover:bg-white mr-3 transition-colors">
+                    <a href="{% url 'support:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
+                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
                             <i data-lucide="life-buoy" class="w-5 h-5 text-rose-600"></i>
                         </div>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Support</span>

@@ -1,0 +1,19 @@
+{
+  "name": "moms_care_true---copy",
+  "version": "1.0.0",
+  "description": "A comprehensive web application designed for mothers to manage appointments, track pregnancy and baby growth, read health resources, and interact with a supportive community.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./static/src/css/input.css -o ./static/css/output.css --watch",
+    "build:prod": "NODE_ENV=production tailwindcss -i ./static/src/css/input.css -o ./static/css/output.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
+  }
+}
