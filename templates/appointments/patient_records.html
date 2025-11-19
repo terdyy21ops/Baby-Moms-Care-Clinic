@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Patient Records - {{ patient.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{% url 'appointments:doctor_dashboard' %}" class="text-rose-600 hover:text-rose-700 font-medium mb-4 inline-flex items-center">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+            Back to Dashboard
+        </a>
+        <h1 class="text-3xl font-bold text-slate-800 mt-4 mb-2">Patient Medical Records</h1>
+        <p class="text-slate-600">Complete medical history and appointment records</p>
+    </div>
+
+    <!-- Patient Info Card -->
+    <div class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl p-6 mb-8 border border-rose-200">
+        <div class="flex items-center space-x-6">
+            {% if patient_profile.profile_picture %}
+            <img src="{{ patient_profile.profile_picture.url }}" alt="{{ patient.get_full_name }}" 
+                 class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
+            {% else %}
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center border-4 border-white shadow-lg">
+                <i data-lucide="user" class="w-12 h-12 text-white"></i>
+            </div>
+            {% endif %}
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">{{ patient.get_full_name }}</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <p class="text-slate-600">Email</p>
+                        <p class="font-medium text-slate-800">{{ patient.email }}</p>
+                    </div>
+                    {% if patient_profile.phone %}
+                    <div>
+                        <p class="text-slate-600">Phone</p>
+                        <p class="font-medium text-slate-800">{{ patient_profile.phone }}</p>
+                    </div>
+                    {% endif %}
+                    {% if patient_profile.date_of_birth %}
+                    <div>
+                        <p class="text-slate-600">Date of Birth</p>
+                        <p class="font-medium text-slate-800">{{ patient_profile.date_of_birth|date:"M d, Y" }}</p>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <p class="text-slate-600">Total Visits</p>
+                        <p class="font-medium text-slate-800">{{ appointments.count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment History -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+        <div class="p-6 border-b border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800">Appointment History</h2>
+        </div>
+        <div class="p-6">
+            {% if appointments %}
+                <div class="space-y-6">
+                    {% for appointment in appointments %}
+                    <div class="border border-slate-200 rounded-lg p-6 hover:border-rose-300 transition-colors">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-lg font-semibold text-slate-800">{{ appointment.date|date:"F d, Y" }}</h3>
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium
+                                        {% if appointment.status == 'pending' %}bg-amber-100 text-amber-700
+                                        {% elif appointment.status == 'approved' %}bg-green-100 text-green-700
+                                        {% elif appointment.status == 'completed' %}bg-blue-100 text-blue-700
+                                        {% else %}bg-red-100 text-red-700{% endif %}">
+                                        {{ appointment.get_status_display }}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-slate-600">{{ appointment.get_appointment_type_display }} • {{ appointment.time|time:"g:i A" }}</p>
+                            </div>
+                            <a href="{% url 'appointments:detail' appointment.pk %}" 
+                               class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors text-sm font-medium">
+                                View Details
+                            </a>
+                        </div>
+
+                        {% if appointment.reason %}
+                        <div class="mb-3">
+                            <p class="text-sm font-semibold text-slate-700 mb-1">Reason for Visit:</p>
+                            <p class="text-sm text-slate-600">{{ appointment.reason }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if appointment.diagnosis %}
+                        <div class="mb-3 bg-blue-50 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-blue-900 mb-1">Diagnosis:</p>
+                            <p class="text-sm text-blue-800">{{ appointment.diagnosis }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if appointment.prescription %}
+                        <div class="mb-3 bg-green-50 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-green-900 mb-1">Prescription:</p>
+                            <p class="text-sm text-green-800">{{ appointment.prescription }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if appointment.follow_up_instructions %}
+                        <div class="mb-3 bg-amber-50 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-amber-900 mb-1">Follow-up Instructions:</p>
+                            <p class="text-sm text-amber-800">{{ appointment.follow_up_instructions }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if appointment.notes %}
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-slate-700 mb-1">Notes:</p>
+                            <p class="text-sm text-slate-600">{{ appointment.notes }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="file-text" class="w-8 h-8 text-slate-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">No Appointment History</h3>
+                    <p class="text-slate-600">No previous appointments found for this patient</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,730 @@
+/* Clinic Theme for Baby Moms Care - Professional Medical Design */
+/* 
+ * This file uses Tailwind CSS @apply directives
+ * CSS linter warnings about @apply are expected and can be ignored
+ * These directives are processed correctly by Tailwind CSS
+ */
+
+:root {
+    /* Clinic Color Palette */
+    --primary-rose: #e11d8b;
+    --secondary-rose: #f43f5e;
+    --accent-rose: #f472b6;
+    --neutral-gray: #64748b;
+    --light-gray: #fdf2f8;
+    --white: #ffffff;
+    --dark-text: #1e293b;
+    --success-green: #10b981;
+    --warning-amber: #f59e0b;
+    --error-red: #ef4444;
+    --info-rose: #f472b6;
+    
+    /* Rose Gradients */
+    --gradient-primary: linear-gradient(135deg, #e11d8b 0%, #f43f5e 100%);
+    --gradient-secondary: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --gradient-accent: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+
+/* Base Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gradient-secondary);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+/* Navigation Styles - Clinical Look */
+.nav-link {
+    @apply flex items-center space-x-2 px-4 py-3 rounded-lg text-slate-600 hover:text-pink-600 hover:bg-pink-50 transition-all duration-300 font-medium border-l-4 border-transparent;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.nav-link i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.nav-link span {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.nav-link:hover {
+    border-left-color: var(--primary-blue);
+    transform: translateX(2px);
+}
+
+.nav-link.active {
+    @apply text-pink-600 bg-pink-50;
+    border-left-color: var(--primary-blue);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+/* Dropdown Styles */
+.dropdown-item {
+    @apply flex items-center space-x-3 px-4 py-3 text-slate-700 hover:bg-pink-50 hover:text-pink-600 transition-all duration-200;
+    border-left: 3px solid transparent;
+}
+
+.dropdown-item:hover {
+    border-left-color: var(--primary-blue);
+}
+
+/* Alert Styles - Medical Theme */
+.alert {
+    @apply p-4 rounded-xl border-l-4 shadow-sm;
+    backdrop-filter: blur(10px);
+}
+
+.alert-success {
+    @apply bg-rose-50 border-rose-500 text-rose-800;
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.15);
+}
+
+.alert-error {
+    @apply bg-gradient-to-r from-pink-600 to-pink-500 text-white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.alert-warning {
+    @apply bg-amber-50 border-amber-500 text-amber-800;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+.alert-info {
+    @apply bg-pink-50 border-pink-500 text-pink-800;
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.15);
+}
+
+/* Card Styles - Clinical Design */
+.card {
+    @apply bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    @apply px-6 py-5 border-b border-slate-200;
+    background: var(--gradient-secondary);
+    position: relative;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+}
+
+.card-body {
+    @apply p-6;
+}
+
+.card-footer {
+    @apply px-6 py-4 border-t border-slate-200 bg-slate-50;
+}
+
+/* Button Styles - Medical Professional */
+.btn {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 shadow-md;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    @apply text-white hover:shadow-lg focus:ring-blue-300;
+    transform: translateY(0);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+    @apply bg-slate-200 text-slate-800 hover:bg-slate-300 focus:ring-slate-300;
+}
+
+.btn-success {
+    background: var(--gradient-accent);
+    @apply text-white hover:shadow-lg focus:ring-green-300;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+}
+
+.btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600 focus:ring-red-300 hover:shadow-lg;
+}
+
+.btn-outline {
+    @apply border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white focus:ring-pink-300;
+    background: transparent;
+}
+
+.btn-sm {
+    @apply px-4 py-2 text-xs;
+}
+
+.btn-lg {
+    @apply px-8 py-4 text-base;
+}
+
+/* Form Styles - Clinical Forms */
+.form-group {
+    @apply mb-6;
+}
+
+.form-label {
+    @apply block text-sm font-semibold text-slate-700 mb-3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-input {
+    @apply w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-pink-300 focus:border-pink-500 transition-all duration-300;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
+}
+
+.form-textarea {
+    @apply w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:border-blue-500 resize-none transition-all duration-300;
+    background: rgba(255, 255, 255, 0.9);
+    min-height: 120px;
+}
+
+.form-select {
+    @apply w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-pink-300 focus:border-pink-500 transition-all duration-300;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-checkbox {
+    @apply rounded-lg border-slate-300 text-pink-600 focus:ring-pink-300 focus:ring-offset-0;
+    transform: scale(1.2);
+}
+
+.form-error {
+    @apply text-red-600 text-sm mt-2 font-medium;
+}
+
+/* Badge Styles - Medical Status */
+.badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+    letter-spacing: 0.5px;
+}
+
+.badge-primary {
+    @apply bg-pink-100 text-pink-800;
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+}
+
+.badge-success {
+    @apply bg-emerald-100 text-emerald-800;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+}
+
+.badge-warning {
+    @apply bg-amber-100 text-amber-800;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.badge-danger {
+    @apply bg-red-100 text-red-800;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.badge-info {
+    @apply bg-cyan-100 text-cyan-800;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.2);
+}
+
+/* Progress Bar - Medical Progress */
+.progress-bar {
+    @apply w-full bg-slate-200 rounded-full h-3 shadow-inner;
+    background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+}
+
+.progress-fill {
+    @apply h-3 rounded-full transition-all duration-1000 ease-out;
+    background: var(--gradient-primary);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    border-radius: inherit;
+}
+
+/* Stats Card - Clinical Dashboard */
+.stat-card {
+    @apply bg-white rounded-2xl p-6 shadow-lg border border-slate-200 relative overflow-hidden;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+.stat-number {
+    @apply text-4xl font-bold text-slate-800 mb-2;
+    font-family: 'Inter', monospace;
+}
+
+.stat-label {
+    @apply text-sm text-slate-600 font-semibold uppercase tracking-wide;
+    letter-spacing: 1px;
+}
+
+.stat-icon {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg;
+    background: var(--gradient-primary);
+}
+
+/* Timeline Styles - Medical History */
+.timeline {
+    @apply relative pl-8;
+}
+
+.timeline::before {
+    content: '';
+    @apply absolute left-4 top-0 w-0.5 h-full bg-slate-300;
+}
+
+.timeline-item {
+    @apply relative pb-8 pl-8;
+}
+
+.timeline-item::before {
+    content: '';
+    @apply absolute left-0 top-2 w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-lg;
+    transform: translateX(-50%);
+}
+
+.timeline-item:last-child::after {
+    content: '';
+    @apply absolute left-0 top-6 w-4 h-full bg-white;
+    transform: translateX(-50%);
+}
+
+/* Medical Status Indicators */
+.status-active {
+    @apply bg-emerald-100 text-emerald-800 border border-emerald-200;
+}
+
+.status-pending {
+    @apply bg-amber-100 text-amber-800 border border-amber-200;
+}
+
+.status-completed {
+    @apply bg-blue-100 text-blue-800 border border-blue-200;
+}
+
+.status-cancelled {
+    @apply bg-red-100 text-red-800 border border-red-200;
+}
+
+/* Hover Effects - Professional */
+.hover-lift {
+    @apply transition-all duration-300;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+}
+
+.hover-glow {
+    @apply transition-all duration-300;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+}
+
+/* Gradient Backgrounds - Clinical */
+.gradient-primary {
+    background: var(--gradient-primary);
+}
+
+.gradient-secondary {
+    background: var(--gradient-secondary);
+}
+
+.gradient-accent {
+    background: var(--gradient-accent);
+}
+
+/* Medical Icons Enhancement */
+.medical-icon {
+    @apply w-6 h-6 text-blue-600;
+    filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.2));
+}
+
+/* Custom Scrollbar - Clinical */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-slate-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    @apply rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #0369a1 100%);
+}
+
+/* Loading Animation - Medical */
+.loading-spinner {
+    @apply animate-spin rounded-full h-10 w-10 border-4 border-slate-200;
+    border-top-color: var(--primary-blue);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-link span {
+        @apply hidden;
+    }
+    
+    .card-body {
+        @apply p-4;
+    }
+    
+    .stat-card {
+        @apply p-4;
+    }
+    
+    .btn {
+        @apply px-4 py-2 text-sm;
+    }
+}
+
+/* Accessibility Enhancements */
+.focus-visible {
+    @apply outline-none ring-4 ring-blue-300 ring-offset-2;
+}
+
+/* Print Styles for Medical Records */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        @apply shadow-none border border-slate-300;
+        break-inside: avoid;
+    }
+    
+    body {
+        background: white !important;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+.bounce-in {
+    animation: bounceIn 0.6s ease-out;
+}
+
+.scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Medical Emergency Styles */
+.emergency-alert {
+    @apply bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Footer Styles - Added from custom.css */
+.footer-link {
+    @apply text-slate-600 hover:text-blue-600 transition-colors;
+}
+
+/* Additional Gradient Backgrounds - Clinic Theme */
+.gradient-pink {
+    background: var(--gradient-primary);
+}
+
+.gradient-lavender {
+    background: var(--gradient-secondary);
+}
+
+/* Clinic Authentication Pages Styles */
+.clinic-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.clinic-input {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.clinic-input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.clinic-select {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.clinic-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.clinic-btn {
+    background: var(--gradient-primary);
+    transition: all 0.3s ease;
+}
+
+.clinic-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+
+.gradient-icon {
+    background: var(--gradient-primary);
+}
+
+/* Enhanced Icon Styles */
+.icon-bounce {
+    animation: iconBounce 2s infinite;
+}
+
+.icon-pulse {
+    animation: iconPulse 1.5s infinite;
+}
+
+.icon-rotate {
+    animation: iconRotate 2s linear infinite;
+}
+
+@keyframes iconBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes iconRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Enhanced Card Interactions */
+.card-interactive {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card-interactive:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(37, 99, 235, 0.15);
+}
+
+/* Status Indicators */
+.status-indicator {
+    position: relative;
+    display: inline-block;
+}
+
+.status-indicator::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.status-indicator.online::after {
+    background-color: #10b981;
+}
+
+.status-indicator.busy::after {
+    background-color: #f59e0b;
+}
+
+.status-indicator.offline::after {
+    background-color: #6b7280;
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

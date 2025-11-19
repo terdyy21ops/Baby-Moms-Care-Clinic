@@ -11,8 +11,14 @@ class UserProfile(models.Model):
         ('admin', 'Admin'),
     )
     
+    ACCOUNT_STATUS = (
+        ('active', 'Active'),
+        ('deactivated', 'Deactivated'),
+    )
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=USER_ROLES, default='mother')
+    account_status = models.CharField(max_length=15, choices=ACCOUNT_STATUS, default='active')
     phone = models.CharField(max_length=15, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     address = models.TextField(blank=True)
@@ -29,6 +35,9 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.get_full_name()} ({self.get_role_display()})"
+    
+    def is_account_active(self):
+        return self.account_status == 'active' and self.user.is_active
     
     def get_absolute_url(self):
         return reverse('accounts:profile', kwargs={'pk': self.pk})

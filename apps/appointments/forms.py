@@ -101,7 +101,7 @@ class AppointmentForm(forms.ModelForm):
                 doctor=doctor,
                 date=date,
                 time=time,
-                status__in=['scheduled', 'confirmed']  # Only check non-cancelled appointments
+                status__in=['pending', 'approved']  # Only check non-cancelled appointments
             ).exclude(pk=self.instance.pk if self.instance else None).exists()
             
             if existing_appointment:
@@ -125,7 +125,7 @@ class AppointmentForm(forms.ModelForm):
                             doctor=doctor,
                             date=date,
                             time=current_time,
-                            status__in=['scheduled', 'confirmed']
+                            status__in=['pending', 'approved']
                         ).exists()
                         
                         if not slot_taken:
@@ -148,7 +148,9 @@ class AppointmentForm(forms.ModelForm):
     
     def save(self, commit=True):
         appointment = super().save(commit=False)
-        if self.user:
+        
+        # Only set patient if not already set and user is provided
+        if not appointment.patient and self.user:
             appointment.patient = self.user
         
         # Set default values if not provided
@@ -200,21 +202,28 @@ class DoctorAvailabilityForm(forms.ModelForm):
 class AppointmentUpdateForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ['status', 'notes']
+        fields = ['status', 'notes', 'diagnosis', 'prescription', 'follow_up_instructions']
         widgets = {
-            'notes': forms.Textarea(attrs={'rows': 4}),
+            'notes': forms.Textarea(attrs={'rows': 3, 'placeholder': 'General notes'}),
+            'diagnosis': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Medical diagnosis'}),
+            'prescription': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Medications and dosage'}),
+            'follow_up_instructions': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Follow-up instructions'}),
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Add clinic CSS classes
         for field_name, field in self.fields.items():
-            if field_name == 'notes':
+            if field_name in ['notes', 'diagnosis', 'prescription', 'follow_up_instructions']:
                 field.widget.attrs.update({
-                    'class': 'clinic-input w-full px-4 py-3 rounded-xl resize-none'
+                    'class': 'w-full px-4 py-3 border border-rose-200 rounded-xl focus:ring-2 focus:ring-rose-500 resize-none'
                 })
             else:
                 field.widget.attrs.update({
-                    'class': 'clinic-select w-full px-4 py-3 rounded-xl'
+                    'class': 'w-full px-4 py-3 border border-rose-200 rounded-xl focus:ring-2 focus:ring-rose-500'
                 })
+
+
+class DoctorAppointmentActionForm(forms.Form):
+    action = forms.ChoiceField(choices=[('approve', 'Approve'), ('decline', 'Decline')])
+    notes = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'placeholder': 'Optional notes'}), required=False)

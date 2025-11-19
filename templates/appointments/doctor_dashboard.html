@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Doctor Dashboard - Baby Moms Care{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-800 mb-2">Doctor Dashboard</h1>
+        <p class="text-slate-600">Manage your appointments and patient care</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-rose-500 to-pink-600 rounded-xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <i data-lucide="calendar-check" class="w-8 h-8"></i>
+                <span class="text-3xl font-bold">{{ today_appointments.count }}</span>
+            </div>
+            <p class="text-rose-100">Today's Appointments</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <i data-lucide="clock" class="w-8 h-8"></i>
+                <span class="text-3xl font-bold">{{ pending_appointments }}</span>
+            </div>
+            <p class="text-amber-100">Pending Approval</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <i data-lucide="check-circle" class="w-8 h-8"></i>
+                <span class="text-3xl font-bold">{{ completed_today }}</span>
+            </div>
+            <p class="text-green-100">Completed Today</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <i data-lucide="users" class="w-8 h-8"></i>
+                <span class="text-3xl font-bold">{{ total_patients }}</span>
+            </div>
+            <p class="text-blue-100">Total Patients</p>
+        </div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8">
+        <div class="p-6 border-b border-slate-200 bg-gradient-to-r from-rose-50 to-pink-50">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-rose-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="calendar-days" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">Today's Schedule</h2>
+                </div>
+                <a href="{% url 'appointments:list' %}" class="text-rose-600 hover:text-rose-700 font-medium text-sm">View All →</a>
+            </div>
+        </div>
+        <div class="p-6">
+            {% if today_appointments %}
+                <div class="space-y-4">
+                    {% for appointment in today_appointments %}
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-rose-400 to-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
+                                {{ appointment.time|time:"H:i" }}
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">{{ appointment.patient.get_full_name }}</h3>
+                                <p class="text-sm text-slate-600">{{ appointment.get_appointment_type_display }}</p>
+                                <span class="inline-block mt-1 px-2 py-1 text-xs font-medium rounded-full
+                                    {% if appointment.status == 'pending' %}bg-amber-100 text-amber-700
+                                    {% elif appointment.status == 'approved' %}bg-green-100 text-green-700
+                                    {% elif appointment.status == 'completed' %}bg-blue-100 text-blue-700
+                                    {% else %}bg-red-100 text-red-700{% endif %}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            {% if appointment.status == 'pending' %}
+                                <a href="{% url 'appointments:appointment_action' appointment.pk 'approve' %}?from=dashboard" 
+                                   class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                                    Approve
+                                </a>
+                                <a href="{% url 'appointments:appointment_action' appointment.pk 'decline' %}?from=dashboard" 
+                                   class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium">
+                                    Decline
+                                </a>
+                            {% elif appointment.status == 'approved' %}
+                                <a href="{% url 'appointments:appointment_action' appointment.pk 'complete' %}?from=dashboard" 
+                                   class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                    Complete
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'appointments:detail' appointment.pk %}" 
+                               class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors text-sm font-medium">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="calendar-x" class="w-8 h-8 text-slate-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">No Appointments Today</h3>
+                    <p class="text-slate-600">You have no scheduled appointments for today</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+        <div class="p-6 border-b border-slate-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-slate-800">Upcoming Appointments</h2>
+                <a href="{% url 'appointments:list' %}" class="text-rose-600 hover:text-rose-700 font-medium text-sm">View All →</a>
+            </div>
+        </div>
+        <div class="p-6">
+            {% if upcoming_appointments %}
+                <div class="space-y-4">
+                    {% for appointment in upcoming_appointments %}
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="calendar" class="w-6 h-6 text-rose-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">{{ appointment.patient.get_full_name }}</h3>
+                                <p class="text-sm text-slate-600">{{ appointment.date|date:"F d, Y" }} at {{ appointment.time|time:"g:i A" }}</p>
+                                <span class="inline-block mt-1 px-2 py-1 text-xs font-medium rounded-full
+                                    {% if appointment.status == 'pending' %}bg-amber-100 text-amber-700
+                                    {% else %}bg-green-100 text-green-700{% endif %}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'appointments:detail' appointment.pk %}" 
+                           class="text-rose-600 hover:text-rose-700 font-medium text-sm">
+                            View Details →
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <p class="text-slate-600">No upcoming appointments</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

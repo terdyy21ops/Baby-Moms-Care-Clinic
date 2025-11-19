@@ -66,132 +66,66 @@
                 
                 <!-- Navigation Links -->
                 {% if user.is_authenticated %}
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="{% url 'accounts:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="stethoscope" class="w-5 h-5 text-rose-600"></i>
-                        </div>
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{% url 'accounts:dashboard' %}" class="flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-all group">
+                        <i data-lucide="home" class="w-5 h-5 text-rose-600 mr-2"></i>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Home</span>
                     </a>
-                    <a href="{% url 'appointments:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="calendar-days" class="w-5 h-5 text-rose-600"></i>
-                        </div>
+                    <a href="{% url 'appointments:list' %}" class="flex items-center px-4 py-2 rounded-lg hover:bg-rose-50 transition-all group">
+                        <i data-lucide="calendar" class="w-5 h-5 text-rose-600 mr-2"></i>
                         <span class="text-slate-700 group-hover:text-rose-600 font-medium">Appointments</span>
-                    </a>
-                    {% if user.userprofile.role == 'mother' %}
-                    <a href="{% url 'pregnancy:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="baby" class="w-5 h-5 text-rose-600"></i>
-                        </div>
-                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Pregnancy</span>
-                    </a>
-                    <a href="{% url 'babytracker:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-600"></i>
-                        </div>
-                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Baby Tracker</span>
-                    </a>
-                    {% endif %}
-                    <a href="{% url 'articles:list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="book-open" class="w-5 h-5 text-rose-600"></i>
-                        </div>
-                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Articles</span>
-                    </a>
-                    <a href="{% url 'forum:category_list' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="message-circle" class="w-5 h-5 text-rose-600"></i>
-                        </div>
-                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Community</span>
-                    </a>
-                    <a href="{% url 'support:dashboard' %}" class="group flex items-center px-3 py-2 rounded-lg hover:bg-rose-50 transition-colors">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white mr-2 transition-colors">
-                            <i data-lucide="life-buoy" class="w-5 h-5 text-rose-600"></i>
-                        </div>
-                        <span class="text-slate-700 group-hover:text-rose-600 font-medium">Support</span>
                     </a>
                 </div>
                 
                 <!-- User Menu -->
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
                     <!-- Notifications -->
-                    <a href="{% url 'accounts:notifications' %}" class="relative p-2.5 rounded-xl hover:bg-rose-50 transition-colors group">
-                        <div class="p-1.5 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
-                            <i data-lucide="bell-ring" class="w-5 h-5 text-rose-600"></i>
-                        </div>
+                    <a href="{% url 'accounts:notifications' %}" class="relative p-2 rounded-lg hover:bg-rose-50 transition-all">
+                        <i data-lucide="bell" class="w-5 h-5 text-rose-600"></i>
                         {% if unread_count > 0 %}
-                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
                         {% endif %}
                     </a>
                     
                     <!-- User Profile Dropdown -->
                     <div class="relative group">
-                        <button class="flex items-center space-x-3 p-2 rounded-xl hover:bg-rose-50 transition-all duration-200 border border-transparent hover:border-rose-200 group">
+                        <button class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-rose-50 transition-all">
                             {% if user.userprofile.profile_picture %}
-                            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-10 h-10 rounded-full object-cover border-2 border-rose-200">
+                            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-rose-200">
                             {% else %}
-                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center group-hover:bg-rose-50 transition-colors">
-                                <i data-lucide="users" class="w-5 h-5 text-rose-600"></i>
+                            <div class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center">
+                                <i data-lucide="user" class="w-4 h-4 text-rose-600"></i>
                             </div>
                             {% endif %}
-                            <span class="hidden md:inline text-sm font-medium text-slate-700 group-hover:text-rose-600 transition-colors">{{ user.get_full_name|default:user.username }}</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 group-hover:text-rose-600 transition-colors"></i>
+                            <span class="hidden lg:inline text-sm font-medium text-slate-700">{{ user.get_full_name|default:user.username|truncatechars:15 }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
                         </button>
                         
                         <!-- Dropdown Menu -->
-                        <div class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-rose-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
-                            <!-- User Info Header -->
-                            <div class="p-4 border-b border-slate-100 bg-gradient-to-r from-rose-50 to-slate-50 rounded-t-xl">
-                                <div class="flex items-center space-x-3">
-                                    {% if user.userprofile.profile_picture %}
-                                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
-                                    {% else %}
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center shadow-inner">
-                                        <i data-lucide="user-circle" class="w-6 h-6 text-rose-600"></i>
-                                    </div>
-                                    {% endif %}
-                                    <div class="min-w-0">
-                                        <p class="font-medium text-slate-900 truncate">{{ user.get_full_name|default:user.username }}</p>
-                                        <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
-                                        <span class="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-rose-100 text-rose-800 rounded-full">
-                                            {{ user.userprofile.get_role_display }}
-                                        </span>
-                                    </div>
-                                </div>
+                        <div class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-rose-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="p-3 border-b border-slate-100">
+                                <p class="font-medium text-slate-900 text-sm">{{ user.get_full_name|default:user.username }}</p>
+                                <p class="text-xs text-slate-500">{{ user.email }}</p>
+                                <span class="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 rounded-full">
+                                    {{ user.userprofile.get_role_display }}
+                                </span>
                             </div>
                             
-                            <!-- Dropdown Menu -->
                             <div class="py-2">
-                                <a href="{% url 'accounts:profile' %}" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
-                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
-                                        <i data-lucide="user" class="w-4 h-4 text-rose-600"></i>
-                                    </div>
-                                    <span class="group-hover:text-rose-600 transition-colors">My Profile</span>
+                                <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                                    <i data-lucide="user" class="w-4 h-4 mr-3 text-rose-600"></i>
+                                    My Profile
                                 </a>
-                                <a href="#" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
-                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
-                                        <i data-lucide="settings-2" class="w-4 h-4 text-rose-600"></i>
-                                    </div>
-                                    <span class="group-hover:text-rose-600 transition-colors">Settings</span>
+                                <a href="{% url 'accounts:notifications' %}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                                    <i data-lucide="bell" class="w-4 h-4 mr-3 text-rose-600"></i>
+                                    Notifications
                                 </a>
-                                <a href="#" class="group flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-rose-50 transition-colors">
-                                    <div class="p-1.5 mr-3 rounded-lg bg-rose-50 group-hover:bg-white transition-colors">
-                                        <i data-lucide="help-circle" class="w-4 h-4 text-rose-600"></i>
-                                    </div>
-                                    <span class="group-hover:text-rose-600 transition-colors">Help & Support</span>
-                                <div class="border-t border-slate-100 my-2"></div>
-                                
-                                <a href="{% url 'support:faq' %}" class="flex items-center space-x-3 px-4 py-3 text-slate-700 hover:bg-pink-50 hover:text-pink-700 transition-colors">
-                                    <i data-lucide="help-circle" class="w-5 h-5"></i>
-                                    <span class="font-medium">Help & Support</span>
-                                </a>
-                                
-                                <div class="border-t border-slate-100 my-2"></div>
-                                
-                                <a href="{% url 'accounts:logout' %}" class="flex items-center space-x-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors rounded-b-xl">
-                                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                                    <span class="font-medium">Sign Out</span>
+                            </div>
+                            
+                            <div class="border-t border-slate-100">
+                                <a href="{% url 'accounts:logout' %}" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors rounded-b-xl">
+                                    <i data-lucide="log-out" class="w-4 h-4 mr-3"></i>
+                                    Sign Out
                                 </a>
                             </div>
                         </div>
@@ -212,10 +146,40 @@
                 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button type="button" class="text-slate-600 hover:text-pink-600 focus:outline-none focus:text-pink-600 transition-colors" onclick="toggleMobileMenu()">
+                    <button type="button" id="mobile-menu-button" class="p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-rose-100 bg-white">
+            <div class="px-4 py-3 space-y-1">
+                <a href="{% url 'accounts:dashboard' %}" class="flex items-center px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                    <i data-lucide="home" class="w-5 h-5 mr-3 text-rose-600"></i>
+                    Home
+                </a>
+                <a href="{% url 'appointments:list' %}" class="flex items-center px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                    <i data-lucide="calendar" class="w-5 h-5 mr-3 text-rose-600"></i>
+                    Appointments
+                </a>
+                <a href="{% url 'accounts:profile' %}" class="flex items-center px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                    <i data-lucide="user" class="w-5 h-5 mr-3 text-rose-600"></i>
+                    My Profile
+                </a>
+                <a href="{% url 'accounts:notifications' %}" class="flex items-center px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5 mr-3 text-rose-600"></i>
+                    Notifications
+                    {% if unread_count > 0 %}
+                    <span class="ml-auto px-2 py-0.5 bg-rose-500 text-white text-xs rounded-full">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                <div class="border-t border-slate-100 my-2"></div>
+                <a href="{% url 'accounts:logout' %}" class="flex items-center px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+                    Sign Out
+                </a>
             </div>
         </div>
     </nav>
@@ -318,11 +282,14 @@
             });
         });
         
-        // Mobile menu toggle function
-        function toggleMobileMenu() {
-            // This is a placeholder for mobile menu functionality
-            // In a full implementation, you would show/hide a mobile menu
-            console.log('Mobile menu toggle clicked');
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
         }
         
         // Enhanced page interactions

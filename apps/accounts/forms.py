@@ -96,3 +96,44 @@ class UserProfileForm(forms.ModelForm):
 class DoctorProfileForm(UserProfileForm):
     class Meta(UserProfileForm.Meta):
         fields = UserProfileForm.Meta.fields + ['license_number', 'specialization', 'years_experience']
+
+
+class AdminUserEditForm(forms.Form):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(required=True)
+    role = forms.ChoiceField(choices=UserProfile.USER_ROLES, required=True)
+    phone = forms.CharField(max_length=15, required=False)
+    
+    def __init__(self, *args, **kwargs):
+        self.user_instance = kwargs.pop('instance', None)
+        self.profile_instance = kwargs.pop('profile_instance', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.user_instance:
+            self.fields['first_name'].initial = self.user_instance.first_name
+            self.fields['last_name'].initial = self.user_instance.last_name
+            self.fields['email'].initial = self.user_instance.email
+        
+        if self.profile_instance:
+            self.fields['role'].initial = self.profile_instance.role
+            self.fields['phone'].initial = self.profile_instance.phone
+        
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent'
+            })
+    
+    def save(self):
+        if self.user_instance:
+            self.user_instance.first_name = self.cleaned_data['first_name']
+            self.user_instance.last_name = self.cleaned_data['last_name']
+            self.user_instance.email = self.cleaned_data['email']
+            self.user_instance.save()
+        
+        if self.profile_instance:
+            self.profile_instance.role = self.cleaned_data['role']
+            self.profile_instance.phone = self.cleaned_data['phone']
+            self.profile_instance.save()
+        
+        return self.user_instance

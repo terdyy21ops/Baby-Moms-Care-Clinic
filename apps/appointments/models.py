@@ -31,11 +31,10 @@ class DoctorAvailability(models.Model):
 
 class Appointment(models.Model):
     STATUS_CHOICES = (
-        ('scheduled', 'Scheduled'),
-        ('confirmed', 'Confirmed'),
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
-        ('no_show', 'No Show'),
     )
     
     APPOINTMENT_TYPES = (
@@ -52,9 +51,12 @@ class Appointment(models.Model):
     date = models.DateField()
     time = models.TimeField()
     appointment_type = models.CharField(max_length=20, choices=APPOINTMENT_TYPES, default='consultation')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     reason = models.TextField()
     notes = models.TextField(blank=True, help_text="Doctor's notes after appointment")
+    diagnosis = models.TextField(blank=True, help_text="Medical diagnosis")
+    prescription = models.TextField(blank=True, help_text="Prescribed medications")
+    follow_up_instructions = models.TextField(blank=True, help_text="Follow-up care instructions")
     duration_minutes = models.PositiveIntegerField(default=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,8 +82,13 @@ class Appointment(models.Model):
     
     @property
     def can_be_cancelled(self):
-        # Can only cancel if appointment is in the future and not already cancelled/completed
-        return not self.is_past and self.status in ['scheduled', 'confirmed']
+        # Can only cancel before appointment day and not already cancelled/completed
+        return self.date > timezone.now().date() and self.status in ['pending', 'approved']
+    
+    @property
+    def can_be_rescheduled(self):
+        # Can reschedule if not past and not cancelled/completed
+        return self.date >= timezone.now().date() and self.status in ['pending', 'approved']
 
 
 class AppointmentReminder(models.Model):

@@ -13,6 +13,12 @@ urlpatterns = [
     path('notifications/', views.notifications_view, name='notifications'),
     path('notifications/<int:notification_id>/read/', views.mark_notification_read, name='mark_notification_read'),
     
+    # User Management (Admin only)
+    path('users/', views.user_management_view, name='user_management'),
+    path('users/<int:user_id>/toggle-status/', views.toggle_user_status, name='toggle_user_status'),
+    path('users/<int:user_id>/edit/', views.edit_user_view, name='edit_user'),
+    path('users/<int:user_id>/delete/', views.delete_user_view, name='delete_user'),
+    
     # Password reset URLs
     path('password-reset/', PasswordResetView.as_view(
         template_name='accounts/password_reset.html',

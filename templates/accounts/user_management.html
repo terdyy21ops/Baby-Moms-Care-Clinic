@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Management - Baby Moms Care{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-800 mb-2">User Management</h1>
+        <p class="text-slate-600">Manage all users, roles, and account statuses</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="clinic-card rounded-xl p-6 mb-6">
+        <form method="GET" class="flex flex-wrap gap-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Filter by Role</label>
+                <select name="role" class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500">
+                    <option value="">All Roles</option>
+                    <option value="mother" {% if role_filter == 'mother' %}selected{% endif %}>Mother</option>
+                    <option value="doctor" {% if role_filter == 'doctor' %}selected{% endif %}>Doctor</option>
+                    <option value="admin" {% if role_filter == 'admin' %}selected{% endif %}>Admin</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Filter by Status</label>
+                <select name="status" class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500">
+                    <option value="">All Statuses</option>
+                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+                    <option value="deactivated" {% if status_filter == 'deactivated' %}selected{% endif %}>Deactivated</option>
+                </select>
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors">
+                    Apply Filters
+                </button>
+                <a href="{% url 'accounts:user_management' %}" class="ml-2 bg-slate-200 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors">
+                    Clear
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Users Table -->
+    <div class="clinic-card rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-100">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Username</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Full Name</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Email</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Role</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Status</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Last Login</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                    {% for user in users %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 text-sm text-slate-900 font-medium">{{ user.username }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-700">{{ user.get_full_name|default:"N/A" }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-700">{{ user.email }}</td>
+                        <td class="px-6 py-4 text-sm">
+                            {% if user.userprofile.role == 'mother' %}
+                                <span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-medium">Mother</span>
+                            {% elif user.userprofile.role == 'doctor' %}
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Doctor</span>
+                            {% elif user.userprofile.role == 'admin' %}
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">Admin</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            {% if user.userprofile.account_status == 'active' %}
+                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">✓ Active</span>
+                            {% else %}
+                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">✗ Deactivated</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-700">
+                            {% if user.last_login %}
+                                {{ user.last_login|date:"M d, Y H:i" }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            <div class="flex gap-2">
+                                <a href="{% url 'accounts:edit_user' user.id %}" 
+                                   class="text-blue-600 hover:text-blue-800 font-medium" 
+                                   title="Edit">
+                                    <i data-lucide="edit" class="w-4 h-4"></i>
+                                </a>
+                                {% if user != request.user %}
+                                    <a href="{% url 'accounts:toggle_user_status' user.id %}" 
+                                       class="{% if user.userprofile.account_status == 'active' %}text-orange-600 hover:text-orange-800{% else %}text-green-600 hover:text-green-800{% endif %} font-medium" 
+                                       title="{% if user.userprofile.account_status == 'active' %}Deactivate{% else %}Activate{% endif %}"
+                                       onclick="return confirm('Are you sure you want to {% if user.userprofile.account_status == 'active' %}deactivate{% else %}activate{% endif %} this user?')">
+                                        <i data-lucide="{% if user.userprofile.account_status == 'active' %}user-x{% else %}user-check{% endif %}" class="w-4 h-4"></i>
+                                    </a>
+                                    <a href="{% url 'accounts:delete_user' user.id %}" 
+                                       class="text-red-600 hover:text-red-800 font-medium" 
+                                       title="Delete">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-8 text-center text-slate-500">
+                            No users found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="mt-6 text-sm text-slate-600">
+        Total Users: <span class="font-semibold">{{ users.count }}</span>
+    </div>
+</div>
+{% endblock %}

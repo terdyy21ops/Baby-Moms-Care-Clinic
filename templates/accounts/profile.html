@@ -1,298 +1,213 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Profile - Baby Moms Care Clinic{% endblock %}
+{% block title %}My Profile - Baby Moms Care{% endblock %}
+
+{% block extra_css %}
+<style>
+body {
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+}
+.rose-input {
+    border: 2px solid #fbcfe8;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+.rose-input:focus {
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    outline: none;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="clinic-card rounded-2xl p-8 mb-8">
-            <div class="flex flex-col md:flex-row items-center space-x-0 md:space-x-6 space-y-4 md:space-y-0">
-                <div class="relative">
-                    {% if user_profile.profile_picture %}
-                        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" 
-                             class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
-                    {% else %}
-                        <div class="w-24 h-24 clinic-icon rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-                            <i data-lucide="user" class="w-12 h-12 text-white"></i>
-                        </div>
-                    {% endif %}
-                    <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
-                        <i data-lucide="check" class="w-4 h-4 text-white"></i>
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <!-- Profile Header -->
+    <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 mb-8 shadow-xl border border-pink-100">
+        <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+            <div class="relative">
+                {% if user_profile.profile_picture %}
+                    <img src="{{ user_profile.profile_picture.url }}" alt="Profile" 
+                         class="w-32 h-32 rounded-full object-cover border-4 border-pink-200 shadow-lg">
+                {% else %}
+                    <div class="w-32 h-32 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center border-4 border-pink-200 shadow-lg">
+                        <i data-lucide="user" class="w-16 h-16 text-white"></i>
                     </div>
+                {% endif %}
+                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-4 border-white flex items-center justify-center shadow-md">
+                    <i data-lucide="check" class="w-5 h-5 text-white"></i>
                 </div>
-                <div class="text-center md:text-left">
-                    <h1 class="text-3xl font-bold text-slate-900 mb-2">{{ user.get_full_name|default:user.username }}</h1>
-                    <p class="text-slate-600 text-lg mb-2">{{ user_profile.get_role_display }}</p>
-                    <p class="text-slate-500">{{ user.email }}</p>
-                    {% if user_profile.phone %}
-                        <p class="text-slate-500">{{ user_profile.phone }}</p>
-                    {% endif %}
+            </div>
+            <div class="text-center md:text-left flex-1">
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent mb-2">{{ user.get_full_name|default:user.username }}</h1>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
+                    <span class="px-4 py-1.5 bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 rounded-full text-sm font-semibold border border-pink-200">
+                        {{ user_profile.get_role_display }}
+                    </span>
+                    <span class="text-slate-600 flex items-center">
+                        <i data-lucide="mail" class="w-4 h-4 mr-1.5"></i>
+                        {{ user.email }}
+                    </span>
                 </div>
+                {% if user_profile.phone %}
+                <p class="text-slate-600 flex items-center justify-center md:justify-start">
+                    <i data-lucide="phone" class="w-4 h-4 mr-1.5"></i>
+                    {{ user_profile.phone }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Form -->
+    <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-pink-100">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-3xl font-bold text-slate-800">Profile Information</h2>
+            <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center shadow-md">
+                <i data-lucide="edit-3" class="w-6 h-6 text-white"></i>
             </div>
         </div>
 
-        <!-- Profile Form -->
-        <div class="clinic-card rounded-2xl p-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-slate-900">Profile Information</h2>
-                <div class="clinic-icon w-12 h-12 rounded-lg flex items-center justify-center">
-                    <i data-lucide="edit" class="w-6 h-6 text-white"></i>
-                </div>
-            </div>
-
-            <form method="post" enctype="multipart/form-data" class="space-y-6">
-                {% csrf_token %}
-                
-                <!-- Display form errors -->
-                {% if form.non_field_errors %}
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                        <div class="flex items-center">
-                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 mr-2"></i>
-                            <p class="text-red-800 font-medium">{{ form.non_field_errors.0 }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- First Name -->
-                    <div>
-                        <label for="id_first_name" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">First Name</label>
-                        <input type="text" name="first_name" id="id_first_name" 
-                               class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user.first_name }}" required>
-                        {% if form.first_name.errors %}
-                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.first_name.errors.0 }}</p>
-                        {% endif %}
-                    </div>
-
-                    <!-- Last Name -->
-                    <div>
-                        <label for="id_last_name" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Last Name</label>
-                        <input type="text" name="last_name" id="id_last_name" 
-                               class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user.last_name }}" required>
-                        {% if form.last_name.errors %}
-                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.last_name.errors.0 }}</p>
-                        {% endif %}
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-2xl">
+                    <div class="flex items-center">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 mr-2"></i>
+                        <p class="text-red-700 font-medium">{{ form.non_field_errors.0 }}</p>
                     </div>
                 </div>
+            {% endif %}
 
-                <!-- Email -->
-                <div>
-                    <label for="id_email" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Email Address</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="mail" class="w-5 h-5 text-slate-400"></i>
-                        </div>
-                        <input type="email" name="email" id="id_email" 
-                               class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user.email }}" required>
-                    </div>
-                    {% if form.email.errors %}
-                        <p class="text-red-600 text-sm mt-2 font-medium">{{ form.email.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Phone -->
-                <div>
-                    <label for="id_phone" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Phone Number</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="phone" class="w-5 h-5 text-slate-400"></i>
-                        </div>
-                        <input type="tel" name="phone" id="id_phone" 
-                               class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user_profile.phone|default:'' }}">
-                    </div>
-                    {% if form.phone.errors %}
-                        <p class="text-red-600 text-sm mt-2 font-medium">{{ form.phone.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Profile Picture -->
-                <div>
-                    <label for="id_profile_picture" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Profile Picture</label>
-                    <div class="flex items-center space-x-4">
-                        {% if user_profile.profile_picture %}
-                            <img src="{{ user_profile.profile_picture.url }}" alt="Current Profile Picture" 
-                                 class="w-16 h-16 rounded-full object-cover border-2 border-slate-300">
-                        {% else %}
-                            <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center border-2 border-slate-300">
-                                <i data-lucide="user" class="w-8 h-8 text-slate-500"></i>
-                            </div>
-                        {% endif %}
-                        <div class="flex-1">
-                            <input type="file" name="profile_picture" id="id_profile_picture" 
-                                   accept="image/*" class="clinic-input w-full px-4 py-3 rounded-xl">
-                            <p class="text-sm text-slate-500 mt-1">Upload a new profile picture (JPG, PNG, max 5MB)</p>
-                        </div>
-                    </div>
-                    {% if form.profile_picture.errors %}
-                        <p class="text-red-600 text-sm mt-2 font-medium">{{ form.profile_picture.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Date of Birth -->
-                <div>
-                    <label for="id_date_of_birth" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Date of Birth</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="calendar" class="w-5 h-5 text-slate-400"></i>
-                        </div>
-                        <input type="date" name="date_of_birth" id="id_date_of_birth" 
-                               class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user_profile.date_of_birth|date:'Y-m-d'|default:'' }}">
-                    </div>
-                    {% if form.date_of_birth.errors %}
-                        <p class="text-red-600 text-sm mt-2 font-medium">{{ form.date_of_birth.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Address -->
-                <div>
-                    <label for="id_address" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Address</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
-                        </div>
-                        <textarea name="address" id="id_address" rows="3" 
-                                  class="clinic-input w-full pl-12 pr-4 py-3 rounded-xl text-slate-900" 
-                                  placeholder="Enter your full address...">{{ user_profile.address|default:'' }}</textarea>
-                    </div>
-                    {% if form.address.errors %}
-                        <p class="text-red-600 text-sm mt-2 font-medium">{{ form.address.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Emergency Contact -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="id_emergency_contact_name" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Emergency Contact Name</label>
-                        <input type="text" name="emergency_contact_name" id="id_emergency_contact_name" 
-                               class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user_profile.emergency_contact_name|default:'' }}">
-                        {% if form.emergency_contact_name.errors %}
-                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.emergency_contact_name.errors.0 }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div>
-                        <label for="id_emergency_contact_phone" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Emergency Contact Phone</label>
-                        <input type="tel" name="emergency_contact_phone" id="id_emergency_contact_phone" 
-                               class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                               value="{{ user_profile.emergency_contact_phone|default:'' }}">
-                        {% if form.emergency_contact_phone.errors %}
-                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.emergency_contact_phone.errors.0 }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Doctor-specific fields -->
-                {% if user_profile.role == 'doctor' %}
-                    <div class="border-t border-slate-200 pt-6">
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4">Professional Information</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="id_specialization" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Specialization</label>
-                                <input type="text" name="specialization" id="id_specialization" 
-                                       class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                                       value="{{ user_profile.specialization|default:'' }}">
-                                {% if form.specialization.errors %}
-                                    <p class="text-red-600 text-sm mt-2 font-medium">{{ form.specialization.errors.0 }}</p>
-                                {% endif %}
-                            </div>
-
-                            <div>
-                                <label for="id_license_number" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">License Number</label>
-                                <input type="text" name="license_number" id="id_license_number" 
-                                       class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                                       value="{{ user_profile.license_number|default:'' }}">
-                                {% if form.license_number.errors %}
-                                    <p class="text-red-600 text-sm mt-2 font-medium">{{ form.license_number.errors.0 }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="id_bio" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Professional Bio</label>
-                            <textarea name="bio" id="id_bio" rows="4" 
-                                      class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900" 
-                                      placeholder="Tell patients about your experience and expertise...">{{ user_profile.bio|default:'' }}</textarea>
-                            {% if form.bio.errors %}
-                                <p class="text-red-600 text-sm mt-2 font-medium">{{ form.bio.errors.0 }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                <!-- Submit Buttons -->
-                <div class="flex gap-4 pt-6 border-t border-slate-200">
-                    <button type="submit" class="clinic-btn flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg">
-                        <div class="flex items-center justify-center">
-                            <i data-lucide="save" class="w-5 h-5 mr-2"></i>
-                            Update Profile
-                        </div>
-                    </button>
-                    <a href="{% url 'accounts:dashboard' %}" 
-                       class="bg-slate-600 hover:bg-slate-700 flex-1 py-4 px-6 rounded-xl text-white font-semibold text-lg text-center">
-                        <div class="flex items-center justify-center">
-                            <i data-lucide="x" class="w-5 h-5 mr-2"></i>
-                            Cancel
-                        </div>
-                    </a>
-                </div>
-            </form>
-        </div>
-
-        <!-- Account Settings -->
-        <div class="clinic-card rounded-xl p-8 mt-8">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6">Account Settings</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                        <div>
-                            <h4 class="font-semibold text-slate-900">Two-Factor Authentication</h4>
-                            <p class="text-sm text-slate-600">Add an extra layer of security</p>
-                        </div>
-                        <button class="text-blue-600 hover:text-blue-500 font-medium text-sm">
-                            Enable
-                        </button>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">First Name</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" 
+                           class="rose-input w-full px-4 py-3 rounded-xl" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Last Name</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}" 
+                           class="rose-input w-full px-4 py-3 rounded-xl" required>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="mail" class="w-5 h-5 text-pink-400"></i>
                     </div>
-                    
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                        <div>
-                            <h4 class="font-semibold text-slate-900">Change Password</h4>
-                            <p class="text-sm text-slate-600">Update your account password</p>
+                    <input type="email" name="email" value="{{ user.email }}" 
+                           class="rose-input w-full pl-12 pr-4 py-3 rounded-xl" required>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Phone Number</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="phone" class="w-5 h-5 text-pink-400"></i>
+                    </div>
+                    <input type="tel" name="phone" value="{{ user_profile.phone|default:'' }}" 
+                           class="rose-input w-full pl-12 pr-4 py-3 rounded-xl">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Profile Picture</label>
+                <div class="flex items-center space-x-4">
+                    {% if user_profile.profile_picture %}
+                        <img src="{{ user_profile.profile_picture.url }}" alt="Current" 
+                             class="w-20 h-20 rounded-full object-cover border-2 border-pink-200">
+                    {% else %}
+                        <div class="w-20 h-20 bg-gradient-to-br from-pink-100 to-rose-100 rounded-full flex items-center justify-center border-2 border-pink-200">
+                            <i data-lucide="user" class="w-10 h-10 text-pink-400"></i>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-500 font-medium text-sm">
-                            Change
-                        </button>
+                    {% endif %}
+                    <div class="flex-1">
+                        <input type="file" name="profile_picture" accept="image/*" 
+                               class="rose-input w-full px-4 py-3 rounded-xl">
+                        <p class="text-xs text-slate-500 mt-2">JPG, PNG (max 5MB)</p>
                     </div>
                 </div>
-                
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                        <div>
-                            <h4 class="font-semibold text-slate-900">Privacy Settings</h4>
-                            <p class="text-sm text-slate-600">Control your data privacy</p>
-                        </div>
-                        <button class="text-blue-600 hover:text-blue-500 font-medium text-sm">
-                            Manage
-                        </button>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Date of Birth</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="calendar" class="w-5 h-5 text-pink-400"></i>
                     </div>
-                    
-                    <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
-                        <div>
-                            <h4 class="font-semibold text-red-900">Delete Account</h4>
-                            <p class="text-sm text-red-600">Permanently delete your account</p>
-                        </div>
-                        <button class="text-red-600 hover:text-red-500 font-medium text-sm">
-                            Delete
-                        </button>
+                    <input type="date" name="date_of_birth" value="{{ user_profile.date_of_birth|date:'Y-m-d'|default:'' }}" 
+                           class="rose-input w-full pl-12 pr-4 py-3 rounded-xl">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Address</label>
+                <div class="relative">
+                    <div class="absolute top-3 left-4 pointer-events-none">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-pink-400"></i>
                     </div>
+                    <textarea name="address" rows="3" 
+                              class="rose-input w-full pl-12 pr-4 py-3 rounded-xl resize-none">{{ user_profile.address|default:'' }}</textarea>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Emergency Contact Name</label>
+                    <input type="text" name="emergency_contact_name" value="{{ user_profile.emergency_contact_name|default:'' }}" 
+                           class="rose-input w-full px-4 py-3 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Emergency Contact Phone</label>
+                    <input type="tel" name="emergency_contact_phone" value="{{ user_profile.emergency_contact_phone|default:'' }}" 
+                           class="rose-input w-full px-4 py-3 rounded-xl">
+                </div>
+            </div>
+
+            <div class="flex gap-4 pt-6">
+                <button type="submit" class="flex-1 py-4 px-6 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-xl font-bold text-lg hover:from-pink-600 hover:to-rose-700 transition-all shadow-lg hover:shadow-xl">
+                    <div class="flex items-center justify-center">
+                        <i data-lucide="save" class="w-5 h-5 mr-2"></i>
+                        Save Changes
+                    </div>
+                </button>
+                <a href="{% url 'accounts:dashboard' %}" 
+                   class="flex-1 py-4 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-lg text-center transition-all">
+                    <div class="flex items-center justify-center">
+                        <i data-lucide="x" class="w-5 h-5 mr-2"></i>
+                        Cancel
+                    </div>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 mt-8 shadow-xl border border-pink-100">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Account Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border border-pink-100 hover:border-pink-300 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-1">Change Password</h4>
+                        <p class="text-sm text-slate-600">Update your password</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-pink-400"></i>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-1">Privacy Settings</h4>
+                        <p class="text-sm text-slate-600">Control your data</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-blue-400"></i>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ from django.utils import timezone
 from .models import Appointment, DoctorAvailability
 from .forms import AppointmentForm, DoctorAvailabilityForm, AppointmentUpdateForm
 from apps.accounts.models import UserProfile, Notification
+from datetime import datetime, timedelta
 
 
 @login_required
@@ -51,7 +52,9 @@ def appointment_list(request):
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'appointments/list.html', {
+        'appointments': page_obj,
         'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
         'user_profile': user_profile,
         'status_filter': status_filter,
         'search_query': search_query,
@@ -71,7 +74,9 @@ def appointment_create(request):
         form = AppointmentForm(request.POST, user=request.user)
         if form.is_valid():
             try:
-                appointment = form.save()
+                appointment = form.save(commit=False)
+                appointment.patient = request.user
+                appointment.save()
                 
                 # Create notification for doctor
                 Notification.objects.create(
@@ -81,16 +86,11 @@ def appointment_create(request):
                     notification_type='appointment'
                 )
                 
-                messages.success(request, 'Appointment booked successfully!')
-                return redirect('appointments:detail', pk=appointment.pk)
+                messages.success(request, f'Appointment booked successfully! Your appointment with Dr. {appointment.doctor.get_full_name()} is scheduled for {appointment.date} at {appointment.time}.')
+                return redirect('appointments:list')
             except Exception as e:
                 messages.error(request, f'Error creating appointment: {str(e)}')
-                # Add more detailed error information for debugging
-                import traceback
-                messages.error(request, f'Debug info: {traceback.format_exc()}')
         else:
-            # Add form errors to messages for debugging
-            messages.error(request, 'Please correct the following errors:')
             for field, errors in form.errors.items():
                 for error in errors:
                     if field == '__all__':
@@ -362,7 +362,7 @@ def check_availability(request):
                     doctor=doctor,
                     date=date,
                     time=current_time,
-                    status__in=['scheduled', 'confirmed']
+                    status__in=['pending', 'approved']
                 ).exists()
                 
                 if not slot_taken:
@@ -389,3 +389,207 @@ def check_availability(request):
             return JsonResponse({'error': str(e)}, status=500)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@login_required
+def doctor_directory(request):
+    """View all available doctors with their profiles and availability"""
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    
+    # Get all active doctors
+    doctors = User.objects.filter(
+        userprofile__role='doctor',
+        is_active=True
+    ).select_related('userprofile').prefetch_related('availabilities')
+    
+    # Search functionality
+    search_query = request.GET.get('search')
+    if search_query:
+        doctors = doctors.filter(
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(userprofile__specialization__icontains=search_query)
+        )
+    
+    # Filter by specialization
+    specialization = request.GET.get('specialization')
+    if specialization:
+        doctors = doctors.filter(userprofile__specialization__icontains=specialization)
+    
+    return render(request, 'appointments/doctor_directory.html', {
+        'doctors': doctors,
+        'user_profile': user_profile,
+        'search_query': search_query,
+        'specialization': specialization,
+    })
+
+
+@login_required
+def doctor_dashboard(request):
+    """Enhanced doctor dashboard with appointment overview"""
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    
+    if user_profile.role != 'doctor':
+        messages.error(request, 'This page is only accessible to doctors.')
+        return redirect('accounts:dashboard')
+    
+    today = timezone.now().date()
+    
+    # Get ALL appointments for this doctor
+    all_appointments = Appointment.objects.filter(doctor=request.user).select_related('patient', 'patient__userprofile')
+    
+    # Today's appointments (all statuses)
+    today_appointments = all_appointments.filter(date=today).order_by('time')
+    
+    # Upcoming appointments (future dates, pending or approved)
+    upcoming_appointments = all_appointments.filter(
+        date__gt=today,
+        status__in=['pending', 'approved']
+    ).order_by('date', 'time')[:5]
+    
+    # Pending approvals (all pending regardless of date)
+    pending_appointments = all_appointments.filter(status='pending').count()
+    
+    # Completed today
+    completed_today = all_appointments.filter(date=today, status='completed').count()
+    
+    # Total unique patients
+    total_patients = all_appointments.values('patient').distinct().count()
+    
+    context = {
+        'user_profile': user_profile,
+        'today_appointments': today_appointments,
+        'upcoming_appointments': upcoming_appointments,
+        'pending_appointments': pending_appointments,
+        'completed_today': completed_today,
+        'total_patients': total_patients,
+    }
+    
+    return render(request, 'appointments/doctor_dashboard.html', context)
+
+
+@login_required
+def mother_dashboard(request):
+    """Enhanced mother dashboard with appointment overview"""
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    
+    if user_profile.role != 'mother':
+        messages.error(request, 'This page is only accessible to mothers.')
+        return redirect('accounts:dashboard')
+    
+    # Get appointments
+    today = timezone.now().date()
+    upcoming_appointments = Appointment.objects.filter(
+        patient=request.user,
+        date__gte=today,
+        status__in=['pending', 'approved']
+    ).order_by('date', 'time')[:5]
+    
+    recent_appointments = Appointment.objects.filter(
+        patient=request.user,
+        status='completed'
+    ).order_by('-date', '-time')[:5]
+    
+    pending_appointments = Appointment.objects.filter(
+        patient=request.user,
+        status='pending'
+    ).count()
+    
+    total_appointments = Appointment.objects.filter(patient=request.user).count()
+    
+    # Get available doctors count
+    available_doctors = User.objects.filter(
+        userprofile__role='doctor',
+        is_active=True
+    ).count()
+    
+    context = {
+        'user_profile': user_profile,
+        'upcoming_appointments': upcoming_appointments,
+        'recent_appointments': recent_appointments,
+        'pending_appointments': pending_appointments,
+        'total_appointments': total_appointments,
+        'available_doctors': available_doctors,
+    }
+    
+    return render(request, 'appointments/mother_dashboard.html', context)
+
+
+@login_required
+def doctor_appointment_action(request, pk, action):
+    """Quick approve/decline/complete appointment"""
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    
+    if user_profile.role != 'doctor':
+        messages.error(request, 'Only doctors can perform this action.')
+        return redirect('appointments:list')
+    
+    appointment = get_object_or_404(Appointment, pk=pk, doctor=request.user)
+    
+    if action == 'approve':
+        appointment.status = 'approved'
+        messages.success(request, f'Appointment with {appointment.patient.get_full_name()} approved successfully!')
+        
+        Notification.objects.create(
+            user=appointment.patient,
+            title='Appointment Approved',
+            message=f'Your appointment on {appointment.date} at {appointment.time} has been approved by Dr. {appointment.doctor.get_full_name()}.',
+            notification_type='appointment'
+        )
+    elif action == 'decline':
+        appointment.status = 'cancelled'
+        messages.success(request, 'Appointment declined.')
+        
+        Notification.objects.create(
+            user=appointment.patient,
+            title='Appointment Declined',
+            message=f'Your appointment request for {appointment.date} at {appointment.time} was declined.',
+            notification_type='appointment'
+        )
+    elif action == 'complete':
+        appointment.status = 'completed'
+        messages.success(request, f'Appointment with {appointment.patient.get_full_name()} marked as completed!')
+        
+        Notification.objects.create(
+            user=appointment.patient,
+            title='Appointment Completed',
+            message=f'Your appointment on {appointment.date} has been completed. Check your medical records for details.',
+            notification_type='appointment'
+        )
+    else:
+        messages.error(request, 'Invalid action.')
+        return redirect('appointments:detail', pk=pk)
+    
+    appointment.save()
+    
+    # Redirect back to dashboard or detail based on request
+    if request.GET.get('from') == 'dashboard':
+        return redirect('appointments:doctor_dashboard')
+    return redirect('appointments:detail', pk=pk)
+
+
+@login_required
+def patient_records(request, patient_id):
+    """View patient medical history"""
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    
+    if user_profile.role != 'doctor':
+        messages.error(request, 'Only doctors can view patient records.')
+        return redirect('appointments:list')
+    
+    patient = get_object_or_404(User, id=patient_id)
+    patient_profile = get_object_or_404(UserProfile, user=patient)
+    
+    # Get all appointments with this patient
+    appointments = Appointment.objects.filter(
+        doctor=request.user,
+        patient=patient
+    ).order_by('-date', '-time')
+    
+    context = {
+        'patient': patient,
+        'patient_profile': patient_profile,
+        'appointments': appointments,
+    }
+    
+    return render(request, 'appointments/patient_records.html', context)

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete User - Baby Moms Care{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <div class="mb-8">
+        <a href="{% url 'accounts:user_management' %}" class="text-pink-600 hover:text-pink-700 font-medium mb-4 inline-flex items-center">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+            Back to User Management
+        </a>
+        <h1 class="text-3xl font-bold text-slate-800 mt-4 mb-2">Delete User</h1>
+        <p class="text-slate-600">Confirm user deletion</p>
+    </div>
+
+    <div class="clinic-card rounded-xl p-8">
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div class="flex items-start">
+                <i data-lucide="alert-triangle" class="w-6 h-6 text-red-500 mr-3 mt-0.5"></i>
+                <div>
+                    <h3 class="text-red-800 font-semibold mb-1">Warning: This action cannot be undone!</h3>
+                    <p class="text-red-700 text-sm">Deleting this user will permanently remove all their data including appointments, pregnancy logs, baby records, and forum posts.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-50 p-6 rounded-lg mb-6">
+            <h3 class="font-semibold text-slate-800 mb-4">User Details</h3>
+            <div class="space-y-2 text-sm">
+                <p><strong class="text-slate-700">Username:</strong> <span class="text-slate-900">{{ deleted_user.username }}</span></p>
+                <p><strong class="text-slate-700">Full Name:</strong> <span class="text-slate-900">{{ deleted_user.get_full_name|default:"N/A" }}</span></p>
+                <p><strong class="text-slate-700">Email:</strong> <span class="text-slate-900">{{ deleted_user.email }}</span></p>
+                <p><strong class="text-slate-700">Role:</strong> 
+                    <span class="text-slate-900">{{ deleted_user.userprofile.get_role_display }}</span>
+                </p>
+                <p><strong class="text-slate-700">Date Joined:</strong> <span class="text-slate-900">{{ deleted_user.date_joined|date:"M d, Y" }}</span></p>
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="flex gap-4">
+                <button type="submit" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                    <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i>
+                    Yes, Delete User
+                </button>
+                <a href="{% url 'accounts:user_management' %}" class="bg-slate-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-300 transition-colors font-semibold">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

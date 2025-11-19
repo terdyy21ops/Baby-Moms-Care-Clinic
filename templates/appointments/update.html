@@ -77,14 +77,41 @@
                         {% endif %}
                     </div>
 
+                    {% if user_profile.role == 'doctor' %}
+                    <!-- Diagnosis -->
+                    <div>
+                        <label for="id_diagnosis" class="block text-sm font-semibold text-slate-700 mb-2">Diagnosis</label>
+                        {{ form.diagnosis }}
+                        {% if form.diagnosis.errors %}
+                            <p class="text-red-600 text-sm mt-2">{{ form.diagnosis.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Prescription -->
+                    <div>
+                        <label for="id_prescription" class="block text-sm font-semibold text-slate-700 mb-2">Prescription</label>
+                        {{ form.prescription }}
+                        {% if form.prescription.errors %}
+                            <p class="text-red-600 text-sm mt-2">{{ form.prescription.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Follow-up Instructions -->
+                    <div>
+                        <label for="id_follow_up_instructions" class="block text-sm font-semibold text-slate-700 mb-2">Follow-up Instructions</label>
+                        {{ form.follow_up_instructions }}
+                        {% if form.follow_up_instructions.errors %}
+                            <p class="text-red-600 text-sm mt-2">{{ form.follow_up_instructions.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
                     <!-- Notes -->
                     <div>
-                        <label for="id_notes" class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Notes <span class="text-slate-500 normal-case">(Optional)</span></label>
-                        <textarea name="notes" id="id_notes" rows="4" 
-                                  class="clinic-input w-full px-4 py-3 rounded-xl text-slate-900 placeholder-slate-500" 
-                                  placeholder="Add any notes about this appointment...">{{ form.notes.value|default:'' }}</textarea>
+                        <label for="id_notes" class="block text-sm font-semibold text-slate-700 mb-2">General Notes</label>
+                        {{ form.notes }}
                         {% if form.notes.errors %}
-                            <p class="text-red-600 text-sm mt-2 font-medium">{{ form.notes.errors.0 }}</p>
+                            <p class="text-red-600 text-sm mt-2">{{ form.notes.errors.0 }}</p>
                         {% endif %}
                     </div>
                 </div>
