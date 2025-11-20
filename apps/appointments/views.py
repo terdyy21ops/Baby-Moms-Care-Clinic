@@ -456,6 +456,9 @@ def doctor_dashboard(request):
     # Total unique patients
     total_patients = all_appointments.values('patient').distinct().count()
     
+    # Check if user is new (first login)
+    is_new_user = request.user.last_login is None
+    
     context = {
         'user_profile': user_profile,
         'today_appointments': today_appointments,
@@ -463,6 +466,7 @@ def doctor_dashboard(request):
         'pending_appointments': pending_appointments,
         'completed_today': completed_today,
         'total_patients': total_patients,
+        'is_new_user': is_new_user,
     }
     
     return render(request, 'appointments/doctor_dashboard.html', context)
@@ -503,6 +507,9 @@ def mother_dashboard(request):
         is_active=True
     ).count()
     
+    # Check if user is new (first login)
+    is_new_user = request.user.last_login is None
+    
     context = {
         'user_profile': user_profile,
         'upcoming_appointments': upcoming_appointments,
@@ -510,6 +517,7 @@ def mother_dashboard(request):
         'pending_appointments': pending_appointments,
         'total_appointments': total_appointments,
         'available_doctors': available_doctors,
+        'is_new_user': is_new_user,
     }
     
     return render(request, 'appointments/mother_dashboard.html', context)

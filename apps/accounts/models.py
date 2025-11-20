@@ -54,6 +54,36 @@ class UserProfile(models.Model):
                 img.save(self.profile_picture.path)
 
 
+class DoctorApplication(models.Model):
+    """Model for doctor applications - not actual accounts"""
+    STATUS_CHOICES = (
+        ('pending', 'Pending Review'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    license_number = models.CharField(max_length=50, help_text='PRC/License ID')
+    specialization = models.CharField(max_length=100)
+    years_experience = models.PositiveIntegerField(default=0)
+    clinic_affiliation = models.CharField(max_length=200, blank=True)
+    valid_id = models.FileField(upload_to='doctor_applications/', help_text='Upload valid ID')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    reviewed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_applications')
+    rejection_reason = models.TextField(blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Dr. {self.first_name} {self.last_name} - {self.get_status_display()}"
+
+
 class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ('appointment', 'Appointment'),

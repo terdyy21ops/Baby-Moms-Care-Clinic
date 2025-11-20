@@ -31,7 +31,13 @@ body {
     <div class="rose-card rounded-3xl p-8 mb-8 bg-gradient-to-r from-pink-50 to-rose-50 shadow-xl">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent mb-2">Welcome Back, {{ user.get_full_name|default:user.username }}! 💕</h1>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent mb-2">
+                    {% if is_new_user %}
+                        Welcome, {{ user.get_full_name|default:user.username }}! 💕
+                    {% else %}
+                        Welcome back, {{ user.get_full_name|default:user.username }}! 💕
+                    {% endif %}
+                </h1>
                 <p class="text-slate-600 text-lg">Your healthcare journey continues here</p>
             </div>
             <div class="hidden md:block">

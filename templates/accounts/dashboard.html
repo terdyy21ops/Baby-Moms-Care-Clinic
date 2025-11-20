@@ -81,7 +81,11 @@
                     </div>
                     <div class="text-center md:text-left">
                         <h1 class="text-3xl font-bold mb-2">
-                            Welcome back, {{ user.get_full_name|default:user.username }}!
+                            {% if is_new_user %}
+                                Welcome, {{ user.get_full_name|default:user.username }}!
+                            {% else %}
+                                Welcome back, {{ user.get_full_name|default:user.username }}!
+                            {% endif %}
                         </h1>
                         <p class="text-pink-100 text-lg">
                             {% if user_profile.role == 'mother' %}
@@ -102,6 +106,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Admin Shortcut Buttons (Admin Only) -->
+        {% if user_profile.role == 'admin' %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <a href="{% url 'accounts:create_doctor' %}" class="group relative overflow-hidden bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="user-plus" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Doctor Registration Form</h3>
+                    <p class="text-pink-100">Create new doctor accounts quickly</p>
+                </div>
+            </a>
+            
+            <a href="{% url 'accounts:create_admin' %}" class="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-plus" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Admin Creation Form</h3>
+                    <p class="text-purple-100">Add new admin users to the system</p>
+                </div>
+            </a>
+        </div>
+        {% endif %}
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

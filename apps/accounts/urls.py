@@ -18,6 +18,8 @@ urlpatterns = [
     path('users/<int:user_id>/toggle-status/', views.toggle_user_status, name='toggle_user_status'),
     path('users/<int:user_id>/edit/', views.edit_user_view, name='edit_user'),
     path('users/<int:user_id>/delete/', views.delete_user_view, name='delete_user'),
+    path('create-doctor/', views.create_doctor_view, name='create_doctor'),
+    path('create-admin/', views.create_admin_view, name='create_admin'),
     
     # Password reset URLs
     path('password-reset/', PasswordResetView.as_view(

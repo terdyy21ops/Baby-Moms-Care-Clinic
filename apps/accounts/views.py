@@ -8,7 +8,7 @@ from django.db.models import Count, Q
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.models import User
-from .forms import CustomUserCreationForm, UserProfileForm, DoctorProfileForm, AdminUserEditForm
+from .forms import CustomUserCreationForm, UserProfileForm, DoctorProfileForm, AdminUserEditForm, AdminDoctorCreationForm
 from .models import UserProfile, Notification
 
 
@@ -62,11 +62,15 @@ def dashboard_view(request):
     notifications = all_notifications[:5]
     unread_count = all_notifications.filter(is_read=False).count()
     
+    # Check if user is new (first login)
+    is_new_user = request.user.last_login is None
+    
     # Dashboard statistics based on user role
     context = {
         'user_profile': user_profile,
         'notifications': notifications,
         'unread_count': unread_count,
+        'is_new_user': is_new_user,
     }
     
     # Admin dashboard data
@@ -272,3 +276,89 @@ def delete_user_view(request, user_id):
         return redirect('accounts:user_management')
     
     return render(request, 'accounts/delete_user.html', {'deleted_user': user})
+
+
+@login_required
+def create_doctor_view(request):
+    """Admin-only view to create doctor accounts"""
+    try:
+        if request.user.userprofile.role != 'admin':
+            messages.error(request, 'You do not have permission to access this page.')
+            return redirect('accounts:dashboard')
+    except UserProfile.DoesNotExist:
+        messages.error(request, 'Profile not found.')
+        return redirect('accounts:dashboard')
+    
+    if request.method == 'POST':
+        form = AdminDoctorCreationForm(request.POST)
+        if form.is_valid():
+            # Create user
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                password=User.objects.make_random_password()
+            )
+            
+            # Create doctor profile
+            UserProfile.objects.create(
+                user=user,
+                role='doctor',
+                phone=form.cleaned_data['phone'],
+                license_number=form.cleaned_data['license_number'],
+                specialization=form.cleaned_data['specialization'],
+                years_experience=form.cleaned_data.get('years_experience', 0)
+            )
+            
+            messages.success(request, f'Doctor account created successfully for {user.get_full_name()}.')
+            return redirect('accounts:user_management')
+    else:
+        form = AdminDoctorCreationForm()
+    
+    return render(request, 'accounts/create_doctor.html', {'form': form})
+
+
+@login_required
+def create_admin_view(request):
+    """Admin-only view to create admin accounts"""
+    try:
+        if request.user.userprofile.role != 'admin':
+            messages.error(request, 'You do not have permission to access this page.')
+            return redirect('accounts:dashboard')
+    except UserProfile.DoesNotExist:
+        messages.error(request, 'Profile not found.')
+        return redirect('accounts:dashboard')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone', '')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists.')
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already exists.')
+        else:
+            # Create admin user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                password=User.objects.make_random_password()
+            )
+            
+            # Create admin profile
+            UserProfile.objects.create(
+                user=user,
+                role='admin',
+                phone=phone
+            )
+            
+            messages.success(request, f'Admin account created successfully for {user.get_full_name()}.')
+            return redirect('accounts:user_management')
+    
+    return render(request, 'accounts/create_admin.html')

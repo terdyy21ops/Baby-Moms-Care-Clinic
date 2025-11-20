@@ -8,8 +8,8 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
-    role = forms.ChoiceField(choices=UserProfile.USER_ROLES, required=True)
     phone = forms.CharField(max_length=15, required=False)
+    # Role is removed from public registration - always set to 'mother'
     
     class Meta:
         model = User
@@ -31,10 +31,10 @@ class CustomUserCreationForm(UserCreationForm):
         
         if commit:
             user.save()
-            # Create user profile
+            # Create user profile - ALWAYS set role to 'mother' for public registration
             UserProfile.objects.create(
                 user=user,
-                role=self.cleaned_data['role'],
+                role='mother',  # Hardcoded - cannot be changed from frontend
                 phone=self.cleaned_data.get('phone', '')
             )
         return user
@@ -96,6 +96,37 @@ class UserProfileForm(forms.ModelForm):
 class DoctorProfileForm(UserProfileForm):
     class Meta(UserProfileForm.Meta):
         fields = UserProfileForm.Meta.fields + ['license_number', 'specialization', 'years_experience']
+
+
+class AdminDoctorCreationForm(forms.Form):
+    """Form for admin to create doctor accounts"""
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(required=True)
+    username = forms.CharField(max_length=150, required=True)
+    phone = forms.CharField(max_length=15, required=True)
+    license_number = forms.CharField(max_length=50, required=True, label='PRC/License Number')
+    specialization = forms.CharField(max_length=100, required=True)
+    years_experience = forms.IntegerField(required=False, min_value=0)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'w-full px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent'
+            })
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Username already exists')
+        return username
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Email already exists')
+        return email
 
 
 class AdminUserEditForm(forms.Form):
