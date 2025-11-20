@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tutorial Demo - Baby Moms Care Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%); }
+        .demo-card { transition: all 0.3s ease; }
+        .demo-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(225, 29, 143, 0.2); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rose-50 to-pink-50 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="gradient-bg rounded-2xl p-8 text-white text-center mb-12 shadow-xl">
+            <h1 class="text-4xl font-bold mb-4">🎓 Interactive Tutorial System</h1>
+            <p class="text-xl text-pink-100">Baby Moms Care Clinic - Onboarding Guide Demo</p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <!-- Feature 1 -->
+            <div class="demo-card bg-white rounded-xl p-6 shadow-lg border-2 border-pink-200">
+                <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
+                    <span class="text-3xl">🎯</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">Auto-Start Tutorial</h3>
+                <p class="text-slate-600 mb-4">Automatically launches 1 second after dashboard load for first-time users. Guides them through all essential features.</p>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li>✅ Smart detection of first visit</li>
+                    <li>✅ Smooth entrance animation</li>
+                    <li>✅ Non-intrusive timing</li>
+                </ul>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="demo-card bg-white rounded-xl p-6 shadow-lg border-2 border-pink-200">
+                <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
+                    <span class="text-3xl">🎨</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">Rose Pink Theme</h3>
+                <p class="text-slate-600 mb-4">Beautiful gradient design matching your brand colors with smooth animations and modern UI elements.</p>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li>✅ Gradient backgrounds (#e11d8f → #f472b6)</li>
+                    <li>✅ Rounded corners & soft shadows</li>
+                    <li>✅ Pulse animations on highlights</li>
+                </ul>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="demo-card bg-white rounded-xl p-6 shadow-lg border-2 border-pink-200">
+                <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
+                    <span class="text-3xl">👥</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">Role-Based Tours</h3>
+                <p class="text-slate-600 mb-4">Customized tutorial steps for Mothers, Doctors, and Admins showing relevant features for each role.</p>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li>✅ Mother: Pregnancy tracking, appointments</li>
+                    <li>✅ Doctor: Patient management, schedules</li>
+                    <li>✅ Admin: User management, reports</li>
+                </ul>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="demo-card bg-white rounded-xl p-6 shadow-lg border-2 border-pink-200">
+                <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4">
+                    <span class="text-3xl">💾</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">Persistent Preferences</h3>
+                <p class="text-slate-600 mb-4">Remembers user choice with "Don't show again" option saved in localStorage across sessions.</p>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li>✅ LocalStorage integration</li>
+                    <li>✅ Checkbox on final step</li>
+                    <li>✅ Can restart anytime via button</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tutorial Steps Preview -->
+        <div class="bg-white rounded-xl p-8 shadow-xl border-2 border-pink-200 mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">📋 Tutorial Steps</h2>
+            
+            <div class="space-y-4">
+                <!-- Step 1 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">👋 Welcome Message</h4>
+                        <p class="text-slate-600 text-sm">Introduction to the platform and tour overview</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">🏠 Home Dashboard</h4>
+                        <p class="text-slate-600 text-sm">Navigate to main dashboard and overview</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">📅 Appointments</h4>
+                        <p class="text-slate-600 text-sm">Book and manage appointments</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">🔔 Notifications</h4>
+                        <p class="text-slate-600 text-sm">View alerts and reminders</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">5</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">👤 Profile Settings</h4>
+                        <p class="text-slate-600 text-sm">Update account information</p>
+                    </div>
+                </div>
+
+                <!-- Step 6-7 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">6-7</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">🎯 Role-Specific Features</h4>
+                        <p class="text-slate-600 text-sm">Customized steps based on user role (Mother/Doctor/Admin)</p>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">8</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">🎉 Completion</h4>
+                        <p class="text-slate-600 text-sm">Tour complete with "Don't show again" option</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Button Demo -->
+        <div class="bg-white rounded-xl p-8 shadow-xl border-2 border-pink-200 mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">🎈 Floating Tutorial Button</h2>
+            <div class="text-center">
+                <p class="text-slate-600 mb-6">Always accessible button in bottom-left corner with floating animation</p>
+                <div class="inline-block relative">
+                    <div class="gradient-bg text-white px-8 py-4 rounded-full font-bold shadow-xl flex items-center gap-3" style="animation: float 3s ease-in-out infinite;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        <span>Start Tutorial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-4xl mb-3">⚡</div>
+                <h4 class="font-bold text-slate-800 mb-2">Fast Loading</h4>
+                <p class="text-slate-600 text-sm">~50KB from CDN</p>
+                <p class="text-slate-600 text-sm">&lt;100ms execution</p>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-4xl mb-3">📱</div>
+                <h4 class="font-bold text-slate-800 mb-2">Responsive</h4>
+                <p class="text-slate-600 text-sm">Mobile optimized</p>
+                <p class="text-slate-600 text-sm">Touch friendly</p>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-4xl mb-3">♿</div>
+                <h4 class="font-bold text-slate-800 mb-2">Accessible</h4>
+                <p class="text-slate-600 text-sm">Keyboard navigation</p>
+                <p class="text-slate-600 text-sm">Screen reader support</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="gradient-bg rounded-2xl p-8 text-white text-center shadow-xl">
+            <h2 class="text-3xl font-bold mb-4">✅ Ready to Use!</h2>
+            <p class="text-xl text-pink-100 mb-6">Login to your dashboard to experience the interactive tutorial</p>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <a href="/accounts/login/" class="bg-white text-pink-600 px-8 py-3 rounded-full font-bold hover:bg-pink-50 transition-all">
+                    Login Now
+                </a>
+                <a href="/tutorial/" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-pink-600 transition-all">
+                    View Tutorial Guide
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</body>
+</html>

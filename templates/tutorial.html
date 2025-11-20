@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Tutorial - Baby Moms Care Clinic</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-rose': '#e11d8f',
+                        'secondary-pink': '#f472b6',
+                        'accent-rose': '#f43f5e',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .tutorial-content {
+            line-height: 1.8;
+        }
+        
+        .tutorial-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e11d8f;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #f472b6;
+        }
+        
+        .tutorial-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #e11d8f;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f43f5e;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tutorial-content p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        
+        .tutorial-content ul, .tutorial-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-content li {
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+        
+        .tutorial-content strong {
+            color: #e11d8f;
+            font-weight: 600;
+        }
+        
+        .tutorial-content code {
+            background: #fef2f2;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            color: #e11d8f;
+            font-size: 0.9em;
+        }
+        
+        .tutorial-content pre {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border-left: 4px solid #f472b6;
+        }
+        
+        .tutorial-content hr {
+            border: none;
+            border-top: 2px solid #fce7f3;
+            margin: 2rem 0;
+        }
+        
+        .tutorial-content blockquote {
+            border-left: 4px solid #f472b6;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%);
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(225, 29, 143, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(225, 29, 143, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-pink-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg border-b border-pink-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="h-16 w-auto flex items-center">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-full w-auto">
+                    </div>
+                    <span class="font-bold text-2xl text-slate-800 ml-3">Baby Moms Care Clinic</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-slate-600 hover:text-rose-600 font-medium transition-colors flex items-center">
+                        <i data-lucide="home" class="w-5 h-5 mr-2"></i>
+                        Home
+                    </a>
+                    <a href="/accounts/login/" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tutorial Header -->
+    <div class="bg-gradient-to-r from-pink-500 to-rose-500 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex items-center justify-center mb-4">
+                <i data-lucide="book-open" class="w-16 h-16"></i>
+            </div>
+            <h1 class="text-4xl font-bold mb-4">User Tutorial Guide</h1>
+            <p class="text-xl text-pink-100">Complete step-by-step guide to using Baby Moms Care Clinic</p>
+        </div>
+    </div>
+
+    <!-- Tutorial Content -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div class="tutorial-content">
+                {{ tutorial_content|safe }}
+            </div>
+        </div>
+        
+        <!-- Quick Links Sidebar -->
+        <div class="mt-8 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border-2 border-pink-200">
+            <h3 class="text-xl font-bold text-rose-600 mb-4 flex items-center">
+                <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
+                Quick Access
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/accounts/register/" class="bg-white p-4 rounded-lg hover:shadow-lg transition-all text-center">
+                    <i data-lucide="user-plus" class="w-8 h-8 text-rose-500 mx-auto mb-2"></i>
+                    <div class="font-semibold text-slate-800">Register</div>
+                </a>
+                <a href="/accounts/login/" class="bg-white p-4 rounded-lg hover:shadow-lg transition-all text-center">
+                    <i data-lucide="log-in" class="w-8 h-8 text-rose-500 mx-auto mb-2"></i>
+                    <div class="font-semibold text-slate-800">Login</div>
+                </a>
+                <a href="/" class="bg-white p-4 rounded-lg hover:shadow-lg transition-all text-center">
+                    <i data-lucide="home" class="w-8 h-8 text-rose-500 mx-auto mb-2"></i>
+                    <div class="font-semibold text-slate-800">Home</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-slate-400">&copy; 2024 Baby Moms Care Clinic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
