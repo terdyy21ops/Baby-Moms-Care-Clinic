@@ -139,15 +139,15 @@
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-pink-50 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-white/95 backdrop-blur-sm shadow-lg border-b border-pink-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-            <div class="flex justify-between items-center h-14 sm:h-16">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div style="display: flex; justify-content: space-between; align-items: center; height: 64px;">
                 <!-- Logo -->
-                <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 min-w-0 max-w-[60%] sm:max-w-none">
-                    <div class="h-9 sm:h-12 lg:h-14 w-auto flex-shrink-0">
-                        <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-full w-auto">
+                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <div style="width: 48px; height: 48px; flex-shrink: 0;">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
-                    <span class="font-bold text-xs sm:text-base lg:text-xl xl:text-2xl text-slate-800 leading-tight truncate">Baby Moms Care Clinic</span>
+                    <span class="font-bold text-base sm:text-lg lg:text-xl text-slate-900" style="white-space: nowrap;">Baby Moms Care</span>
                 </div>
                 
                 <!-- Desktop Navigation -->
@@ -164,18 +164,18 @@
                 </div>
                 
                 <!-- Mobile/Tablet Buttons -->
-                <div class="flex lg:hidden items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                    <a href="/accounts/login/" class="text-rose-600 font-semibold text-[10px] sm:text-xs px-1.5 sm:px-2 py-1 whitespace-nowrap">Login</a>
-                    <a href="/accounts/register/" class="bg-gradient-to-r from-pink-500 to-rose-600 text-white font-semibold text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap">Sign Up</a>
-                    <button id="mobile-menu-btn" class="p-1.5 sm:p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors ml-1">
-                        <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;" class="lg:hidden">
+                    <a href="/accounts/login/" style="white-space: nowrap; flex-shrink: 0; font-size: 13px; padding: 4px 8px; color: #e11d8f; font-weight: 600;">Login</a>
+                    <a href="/accounts/register/" style="white-space: nowrap; flex-shrink: 0; background: linear-gradient(135deg, #e11d8f 0%, #f472b6 100%); color: white; font-weight: 600; font-size: 13px; padding: 6px 12px; border-radius: 8px;">Sign Up</a>
+                    <button id="mobile-menu-btn" style="flex-shrink: 0; padding: 6px; color: #64748b;" class="hover:text-rose-600 rounded-lg transition-colors">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
             </div>
         </div>
         
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden lg:hidden border-t border-pink-100 bg-white">
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200 bg-white">
             <div class="px-4 py-3 space-y-1">
                 <a href="#features" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors font-medium">Features</a>
                 <a href="#services" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-rose-50 hover:text-rose-600 transition-colors font-medium">Services</a>
