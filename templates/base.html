@@ -132,7 +132,8 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="flex items-center space-x-4">
+                <!-- Desktop Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
                     <a href="{% url 'accounts:login' %}" class="text-slate-600 hover:text-pink-600 font-medium transition-colors flex items-center">
                         <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
                         Login
@@ -142,14 +143,26 @@
                         Sign Up
                     </a>
                 </div>
+                
+                <!-- Mobile Auth Buttons -->
+                <div class="flex md:hidden items-center gap-2 flex-shrink-0">
+                    <a href="{% url 'accounts:login' %}" class="text-slate-700 hover:text-pink-600 font-medium text-sm px-2 py-1.5 transition-colors">
+                        Login
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-sm px-3 py-1.5 rounded-lg hover:from-pink-700 hover:to-pink-600 transition-all font-medium shadow-md">
+                        Sign Up
+                    </a>
+                </div>
                 {% endif %}
                 
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
+                <!-- Mobile menu button (only for authenticated users) -->
+                {% if user.is_authenticated %}
+                <div class="md:hidden ml-2">
                     <button type="button" id="mobile-menu-button" class="p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
+                {% endif %}
             </div>
         </div>
         
