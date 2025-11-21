@@ -139,18 +139,21 @@
         /* Mobile navbar fixes */
         @media (max-width: 640px) {
             nav .logo-text {
-                font-size: 14px;
-                max-width: 120px;
+                font-size: 11px;
+                max-width: 100px;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
             nav .logo-img {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
             nav .mobile-btn {
-                font-size: 11px;
-                padding: 6px 10px;
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+            nav .mobile-btn.signup {
+                padding: 5px 10px;
             }
         }
     </style>
@@ -165,7 +168,7 @@
                     <div class="logo-img w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex-shrink-0">
                         <img src="{% static 'images/logo.png' %}" alt="Baby Moms Care Logo" class="w-full h-full object-contain">
                     </div>
-                    <span class="logo-text font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-slate-900 truncate">Baby Moms Care</span>
+                    <span class="logo-text font-bold text-[11px] sm:text-base md:text-lg lg:text-xl xl:text-2xl text-slate-900 truncate">Baby Moms Care</span>
                 </div>
                 
                 <!-- Desktop Navigation -->
@@ -178,11 +181,11 @@
                 </div>
                 
                 <!-- Mobile Navigation -->
-                <div class="flex md:hidden items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                    <a href="/accounts/login/" class="mobile-btn text-slate-700 hover:text-pink-600 font-semibold text-xs sm:text-sm transition-colors whitespace-nowrap">Login</a>
-                    <a href="/accounts/register/" class="mobile-btn bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-lg transition-all whitespace-nowrap">Sign Up</a>
-                    <button id="mobile-menu-btn-mobile" class="p-1 sm:p-1.5 text-slate-700 hover:text-pink-600 transition-colors flex-shrink-0">
-                        <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                <div class="flex md:hidden items-center gap-1 sm:gap-1.5 flex-shrink-0">
+                    <a href="/accounts/login/" class="mobile-btn text-slate-700 hover:text-pink-600 font-semibold text-[10px] sm:text-xs transition-colors whitespace-nowrap">Login</a>
+                    <a href="/accounts/register/" class="mobile-btn signup bg-pink-500 hover:bg-pink-600 text-white font-bold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg shadow-lg transition-all whitespace-nowrap">Sign Up</a>
+                    <button id="mobile-menu-btn-mobile" class="p-0.5 sm:p-1 text-slate-700 hover:text-pink-600 transition-colors flex-shrink-0">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
