@@ -8,10 +8,6 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 urlpatterns = [
-     path(
-        "googleacea717a354f790c.html",
-        TemplateView.as_view(template_name="googleacea717a354f790c.html"),
-        name="google_verification",),
     path('admin/', admin.site.urls),
     path('', include('config.test_urls')),
     path('accounts/', include('apps.accounts.urls')),
